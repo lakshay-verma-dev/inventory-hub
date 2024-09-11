@@ -1,0 +1,26 @@
+.logout-container {
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logout-image {
+  width: 100px;
+  height: 100px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.logout-image:hover {
+  transform: rotate(360deg);
+}
+
+.logout-button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}

@@ -1,0 +1,146 @@
+/* FooterComponents.css */
+
+.footer {
+  background-color: #1b1b1b;
+  color: #f8f9fa;
+  padding: 30px 0;
+  position: relative;
+}
+
+.footer h5 {
+  color: #ffffff;
+  margin-bottom: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.footer h5 .me-2 {
+  margin-right: 8px;
+}
+
+.footer p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer ul {
+  padding: 0;
+  list-style: none;
+}
+
+.footer ul li {
+  margin-bottom: 10px;
+}
+
+.footer ul li a {
+  color: #f8f9fa;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer ul li a:hover {
+  color: #adb5bd;
+}
+
+.contact-info li {
+  margin-bottom: 10px;
+}
+
+.contact-info a {
+  color: #f8f9fa;
+  text-decoration: none;
+}
+
+.newsletter-form {
+  display: flex;
+  align-items: center;
+}
+
+.newsletter-form .form-control {
+  background-color: #343a40;
+  color: #f8f9fa;
+  border: none;
+  border-radius: 0;
+  margin-right: 10px;
+}
+
+.newsletter-form .form-control:focus {
+  box-shadow: none;
+  background-color: #495057;
+}
+
+.newsletter-form .btn-outline-light {
+  color: #f8f9fa;
+  border-color: #f8f9fa;
+}
+
+.newsletter-form .btn-outline-light:hover {
+  background-color: #adb5bd;
+  border-color: #adb5bd;
+  color: #343a40;
+}
+
+.social-icons a {
+  color: #f8f9fa;
+  font-size: 1.5rem;
+  margin-right: 15px;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #adb5bd;
+}
+
+.foot2 {
+  border-top: 1px solid #343a40;
+  padding-top: 20px;
+}
+
+.foot2 p {
+  margin-top: 0;
+}
+
+.back-to-top {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #343a40;
+  border-color: #f8f9fa;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.back-to-top:hover {
+  background-color: #adb5bd;
+  border-color: #adb5bd;
+  color: #343a40;
+}
+
+@media (max-width: 767px) {
+  .newsletter-form {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .newsletter-form .form-control {
+    margin-right: 0;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .newsletter-form .btn-outline-light {
+    width: 100%;
+  }
+
+  .foot2 {
+    text-align: center;
+  }
+
+  .social-icons {
+    margin-top: 20px;
+  }
+}

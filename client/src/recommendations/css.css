@@ -1,0 +1,153 @@
+/* Container Styling */
+.article-detail-container {
+  padding: 30px;
+  margin-top: 60px;
+  background-color: #f0f4f8; /* Softer background color */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-width: 100%;
+  /* margin: 50px auto; Centering the container */
+}
+
+/* Header Styling */
+h1 {
+  color: #343a40; /* Dark grey color for the header */
+  font-weight: bold;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Author Section */
+.author-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.author-section img {
+  border: 3px solid #007bff; /* Bold border for emphasis */
+  /* border-radius: 50%; */
+  width: 350px;
+  height: 250px;
+  margin-right: 20px;
+}
+
+.author-section p {
+  font-size: 1.2rem;
+  color: #555; /* Balanced text color */
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* Card Styling */
+.book-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.article-detail-container .card {
+  border: none; /* Clean borderless design */
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff; /* Bright background for cards */
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  /* height: 300px; */
+  margin-bottom: 20px;
+}
+
+.card:hover {
+  /* transform: translateY(-10px); Lift the card slightly on hover */
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1); /* Stronger shadow on hover */
+}
+
+.card-title {
+  color: #007bff; /* Bright blue color for titles */
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.card-text {
+  color: #333; /* Darker text for better readability */
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Buy Button Styling */
+.buy-button {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 50px;
+  padding: 10px 20px;
+  margin-top: 15px;
+  display: inline-block;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  text-decoration: none;
+}
+
+.buy-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: translateY(-5px); /* Slight lift on hover */
+}
+
+/* Back Button Styling */
+.button-back {
+  color: #007bff;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.button-back:hover {
+  color: #0056b3; /* Darker blue on hover */
+  /* transform: translateX(-5px); Slide to the left on hover */
+}
+
+.button-back svg {
+  margin-right: 10px; /* Space between icon and text */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .article-detail-container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .author-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .author-section img {
+    margin-bottom: 20px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.article-image
+{
+  height: 400px;
+  background-size: contain;
+  background-position: center;
+}

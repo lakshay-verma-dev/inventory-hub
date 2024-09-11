@@ -1,0 +1,58 @@
+/* src/assets/styles/PromoBanner.css */
+.promo-banner-container {
+  background-color: #008080; /* Teal background */
+  padding-top: 50px;
+  padding-bottom: 50px;
+  color: white;
+  /* border-radius: 10px; */
+  /* overflow: hidden; */
+  margin-top: 30px;
+}
+
+.promo-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.promo-button {
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  color: #008080;
+  border: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.promo-button:hover {
+  background-color: #004d4d; /* Darker teal for hover */
+  color: white;
+  transform: scale(1.05);
+}
+
+.promo-image-container {
+  text-align: center;
+}
+
+.promo-image {
+  max-width: 90%;
+  /* margin-left: 20%; */
+  height: 250px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.promo-image:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .promo-text h2 {
+    font-size: 2rem;
+  }
+
+  .promo-button {
+    font-size: 1rem;
+  }
+}

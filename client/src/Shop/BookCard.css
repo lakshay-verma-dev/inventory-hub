@@ -1,0 +1,105 @@
+/* Cart.css */
+
+.cart-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+  margin: 20px 0;
+  transition: 200ms;
+}
+
+.cart-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 10px 4px rgba(0, 0, 0, 0.612);
+}
+
+.card-img-top {
+  border-radius: 10px 10px 0 0;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.text-primary {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.shopping-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+.shopping-icon button {
+  border-radius: 50%;
+  padding: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.shopping-icon button:hover {
+  background-color: rgb(21, 91, 189); /* Slightly darker background on hover */
+  color: white;
+  transform: scale(1.3); /* Scale up the button on hover */
+}
+
+.shopping-icon button:active {
+  background-color: #e2e6ea; /* Even darker background on active */
+  transform: scale(0.95); /* Scale down the button on click */
+}
+
+
+/* Category Selection Dropdown Container */
+.category-dropdown-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Spacing between dropdown and other content */
+}
+
+/* Category Dropdown Select */
+.form-select {
+  width: 100%; /* Set a fixed width for the dropdown */
+  border-radius: 8px; /* Slightly rounded corners */
+  font-size: 1.1rem; /* Increase font size for better readability */
+  padding: 10px 15px; /* Add padding inside the select box */
+  background-color: #f9f9f9; /* Light background color */
+  border: 2px solid #ccc; /* Light gray border */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  color: #333; /* Dark text color */
+}
+
+/* Dropdown hover and focus effects */
+.form-select:hover,
+.form-select:focus {
+  border-color: #0056b3; /* Change border color on hover/focus */
+  outline: none; /* Remove default browser outline */
+  box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3); /* Slight shadow glow */
+}
+
+/* Option Styling */
+.form-select option {
+  font-size: 1rem; /* Option font size */
+  padding: 5px 10px; /* Padding inside each option */
+  color: #333; /* Text color */
+  background-color: white; /* Background color for dropdown options */
+}
+
+/* Responsive Dropdown Styling */
+@media (max-width: 768px) {
+  .form-select {
+    width: 100%; /* Full width on smaller screens */
+    font-size: 1rem; /* Reduce font size for better fit */
+  }
+}

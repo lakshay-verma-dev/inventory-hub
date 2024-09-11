@@ -1,0 +1,154 @@
+.about-section {
+  padding: 60px 0;
+  background-color: #ffffff;
+}
+
+.about-title {
+  font-size: 3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.about-subtitle {
+  font-size: 1.25rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.about-icon {
+  color: #007bff;
+  margin-right: 10px;
+}
+
+.about-mission, .about-history, .about-values, .about-team, .about-community, .about-testimonials, .about-contact {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.about-mission {
+  background: linear-gradient(to right, #e0f7fa, #80deea);
+}
+
+.about-history {
+  background: linear-gradient(to right, #fce4ec, #f8bbd0);
+}
+
+.about-values {
+  background: #e3f2fd;
+}
+
+.about-team {
+  background: #e8f5e9;
+}
+
+.about-community {
+  background: linear-gradient(to right, #fff9c4, #fff176);
+}
+
+.about-testimonials {
+  background: #f1f8e9;
+}
+
+.about-contact {
+  background: linear-gradient(to right, #ffebee, #ffcdd2);
+}
+
+.team-member {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.team-member:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.analytics-card {
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.circle-progress {
+  margin-bottom: 15px;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.social-icon {
+  font-size: 1.5rem;
+  color: #007bff;
+  transition: color 0.3s;
+}
+
+.social-icon:hover {
+  color: #0056b3;
+}
+
+
+.contact-us-section {
+  padding: 60px 0;
+  background-color: #f4f4f9;
+}
+
+.contact-us-title {
+  font-size: 3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.contact-us-subtitle {
+  font-size: 1.25rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.contact-form {
+  background: linear-gradient(to right, #e0f7fa, #80deea);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-details {
+  background: linear-gradient(to right, #fff9c4, #fff176);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.social-icons a {
+  color: #555;
+  font-size: 1.5rem;
+  margin: 0 10px;
+}
+
+.social-icons a:hover {
+  color: #007bff;
+}
+
+button {
+  background-color: #007bff;
+  border-color: #007bff;
+}
