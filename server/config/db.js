@@ -1,31 +1,14 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
-require("dotenv").config();
+import mongoose from "mongoose";
 
-const uri = "mongodb+srv://book-store:FneamjHH8BpqOTK4@cluster0.zm0eg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-  
-});
-async function connectDB() {
+const connectDb = (url) => {
   try {
-    await client.connect();
-    console.log("Connected to MongoDB Atlas");
-    const db = client.db("BookInventory");
-
-    // Return multiple collections
-    return {
-      bookCollections: db.collection("Books"),
-      paymentCollections: db.collection("payment"),
-      // Add more collections if needed
-    };
+    mongoose.connect(url);
+    console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
-    throw error;
+    process.exit(1)
+    
   }
-}
-module.exports = connectDB;
+}  
+
+export default connectDb;
