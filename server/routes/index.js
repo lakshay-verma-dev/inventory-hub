@@ -8,5 +8,4 @@ router.use("/auth", authRoutes);
 router.use("/book", bookRoutes);
 
 
-
 export default router;
