@@ -6,7 +6,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeft, FaUser } from "react-icons/fa";
 import signup from "./signup.jpg";
-import { useFirebase } from "../../provider/AuthProvider";
 
 const Login = () => {
   const firebase = useFirebase();
@@ -21,7 +20,6 @@ const Login = () => {
     password: "",
   });
 
-  const [firebaseError, setFirebaseError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Logout.css"; // Create your custom CSS file for extra styling
 import { useLocation, useNavigate } from "react-router-dom";
-import { useFirebase } from "../../provider/AuthProvider";
 
 
 const Logout = () => {

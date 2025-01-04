@@ -15,34 +15,10 @@ import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCartCount } from "../../store/cartSlice";
 import "./Navbarstyle.css";
-import { useFirebase } from "../../provider/AuthProvider";
-import { doc, getDoc } from "firebase/firestore";
 
 const NavbarComponents = () => {
   const cartCount = useSelector(selectCartCount);
-  // const { user, logout, db, firebaseAuth } = useFirebase();
-  const { logOut, user } = useFirebase();
-  // console.log(user);
-  
-
-  // const [userDetails, setUserDetails] = useState(null);
-
-  // const fetchUsers = async () => {
-  //   firebaseAuth.onAuthStateChanged(async (user) => {
-  //     console.log(user);
-  //     const docRef = doc(db, "users", user.uid);
-  //     const docSnap = await getDoc(docRef);
-  //     if (docSnap.exists()) {
-  //       setUserDetails(docSnap.data());
-  //       console.log(docSnap.data());
-  //     } else {
-  //       console.log("not login");
-  //     }
-  //   });
-  // };
-  // useEffect(() => {
-  //   // fetchUsers();
-  // });
+ 
   const handleLogout = () => {
     toast.success("You have successfully logged out!", {
       position: "top-right",
@@ -148,15 +124,14 @@ const NavbarComponents = () => {
               <span className="ms-2"></span>
             </Nav.Link>
 
-            <motion.div>
+            {/* <motion.div>
               <Dropdown className="mt-3">
                 <Dropdown.Toggle
                   variant="outline-light"
-                  // id="dropdown-basic"
                   className="d-flex align-items-center hover:bg-transparent text-white"
                 >
                   <FaUser className="me-2 text-white" />
-                  {/* {user?.displayName} */}
+                  {user?.displayName}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="end" className="dropdown-menu-end">
@@ -195,7 +170,7 @@ const NavbarComponents = () => {
                   )}
                 </Dropdown.Menu>
               </Dropdown>
-            </motion.div>
+            </motion.div> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

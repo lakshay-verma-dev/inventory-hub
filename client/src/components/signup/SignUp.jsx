@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeft, FaUser } from "react-icons/fa";
 import "./SignUp.css";
 import signup from "./signup.jpg";
-import { useFirebase } from "../../provider/AuthProvider";
 import ReCAPTCHA from "react-google-recaptcha";
 
 // import {setDoc}
@@ -21,7 +20,6 @@ const SignUp = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
-  const [firebaseError, setFirebaseError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState("");
   const [verificationSent, setVerificationSent] = useState(false);

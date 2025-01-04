@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { USER_API } from ".";
+import { USER_API } from "./index.js";
 
 const signupRoute = async (userData) => {
   return axios.post(`${USER_API}/register`, userData);
@@ -26,4 +26,4 @@ const logout = () => {
   localStorage.removeItem("token");
 };
 
-export { signupRoute, login, verifyOtp, forgotPassword, resetPassword, logout };
+export default { signupRoute, login, verifyOtp, forgotPassword, resetPassword, logout };

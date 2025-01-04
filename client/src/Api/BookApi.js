@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { BOOK_API } from ".";
+import { BOOK_API } from "./index.js";
 
 const uploadBook = async (newbookdata) => {
   return axios.post(`${BOOK_API}/upload-book`, newbookdata);
@@ -18,8 +18,8 @@ const getsingleBook = async (id) => {
   return axios.get(`${BOOK_API}/single-book/${id}`);
 };
 
-const UpdateBook = async (id, updateData) => {
+const updatedBook = async (id, updateData) => {
   return axios.patch(`${BOOK_API}/update-book/${id}`, updateData);
 };
 
-export { uploadBook, getBook, deleteBook, getsingleBook, UpdateBook };
+export { uploadBook, getBook, deleteBook, getsingleBook, updatedBook };
