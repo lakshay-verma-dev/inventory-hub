@@ -31,11 +31,7 @@ const uploadBook = async (req, res) => {
       console.error("Error uploading image to Cloudinary:", uploadError);
       return res.status(500).json({ error: "Failed to upload image" });
     }
-
-    // Create new book document
-
-    // const user = await User.create({ firstName, lastName, email, password });
-    const newBook = await Book.create({
+       const newBook = await Book.create({
       id: uuidv4(),
       title,
       author,

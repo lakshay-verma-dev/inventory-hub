@@ -12,13 +12,12 @@ import { motion } from "framer-motion";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../store/cartSlice";
-import { getBook, paymentSession } from "../api";
+import { addToCart } from "../../store/cartSlice";
+import { getBook } from "../../Api/BookApi";
 import "./BookCard.css"; // Assume this file has necessary custom styles
 import { loadStripe } from "@stripe/stripe-js";
 import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer here
 import "react-toastify/dist/ReactToastify.css";
-import { useFirebase } from "../provider/AuthProvider";
 
 const categories = [
   "All Books",
@@ -41,7 +40,6 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All Books");
   const dispatch = useDispatch();
-  const { user } = useFirebase(); // Firebase user
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -73,12 +71,12 @@ const Shop = () => {
   };
 
   const makePayment = async (item) => {
-    if (!user) {
-      toast.error("No user logged in. Please log in to purchase the product.", {
-        // position: toast.POSITION.TOP_CENTER,
-      });
-      return;
-    }
+    // if (!user) {
+    //   toast.error("No user logged in. Please log in to purchase the product.", {
+    //     // position: toast.POSITION.TOP_CENTER,
+    //   });
+    //   return;
+    // }
 
     const stripe = await loadStripe(
       "pk_test_51PuzQeAeVmKMN0IrakS9fpOweJcytIb4dteFs0k4xZOMUyh9QDt3J4pJCAx4I6DxN9UdipdYITwNhzFSN73Xi59F009YKq5khJ"
@@ -154,7 +152,7 @@ const Shop = () => {
         {filteredBooks.length > 0 ? (
           filteredBooks.map((item) => (
             <Col
-              key={item._id}
+              key={item.id}
               md={4}
               sm={6}
               xs={12}
@@ -163,8 +161,8 @@ const Shop = () => {
             >
               <motion.div
                 className="position-relative cart-card"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
+                // whileHover={{ scale: 1.05 }}
+                // transition={{ duration: 0.3 }}
               >
                 <Card className="h-100">
                   <div className="shopping-icon">
@@ -179,7 +177,7 @@ const Shop = () => {
                     <Card.Img
                       variant="top"
                       className="h-96"
-                      src={item.imageUrl}
+                      src={item.imageURL}
                     />
                   </Link>
                   <Card.Body className="text-black">

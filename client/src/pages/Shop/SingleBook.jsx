@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { FaArrowLeft, FaShoppingCart, FaStar } from "react-icons/fa";
-import { getsingleBook, paymentSession } from "../api";
+import { getsingleBook } from "../../Api/BookApi";
 import { loadStripe } from "@stripe/stripe-js";
-import { useFirebase } from "../provider/AuthProvider";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./SingleBook.css"; // Custom CSS

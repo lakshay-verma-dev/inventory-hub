@@ -1,26 +1,26 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Home from "../Home/home/Home";
-import Shop from "../Shop/Shop";
+import Home from "../pages/Home/home/Home";
+import Shop from "../pages/Shop/Shop";
 import About from "../components/about/About";
-import SingleBook from "../Shop/SingleBook";
-import DasboardLayout from "../Dasboard/DasboardLayout";
-import Dasboard from "../Dasboard/dashboard/Dasboard";
-import UploadBook from "../Dasboard/upload/UploadBook";
-import ManageBook from "../Dasboard/manage/ManageBook";
-import EditBook from "../Dasboard/edit/EditBook";
+import SingleBook from "../pages/Shop/SingleBook";
+import DasboardLayout from "../pages/Dasboard/DasboardLayout";
+import Dasboard from "../pages/Dasboard/dashboard/Dasboard";
+import UploadBook from "../pages/Dasboard/upload/UploadBook";
+import ManageBook from "../pages/Dasboard/manage/ManageBook";
+import EditBook from "../pages/Dasboard/edit/EditBook";
 import SignUp from "../components/signup/SignUp";
 import Login from "../components/login/Login";
 import PrivateRoute from "../privateRoute/PrivateRoute";
 import Logout from "../components/logout/Logout";
 import Cart from "../components/cart/Cart";
-import Recommendations from "../recommendations/Recommendations";
-import ArticleDetailDrVikas from "../recommendations/ArticleDetailDrVikas";
-import ArticleDetail4BestSelfhelp from "../recommendations/ArticleDetail4BestSelfhelp";
-import ArticleDetail5Unpopular from "../recommendations/ArticleDetail5Unpopular"
-import ArticleDetail3Mustreadselfhelp from "../recommendations/ArticleDetail3Mustreadselfhelp";
-import ArticleDetail5bookscontent from "../recommendations/ArticleDetail5bookscontent";
-import ArticleDetail5HindiNovels from "../recommendations/ArticleDetail5HindiNovels"
+import Recommendations from "../pages/recommendations/Recommendations";
+import ArticleDetailDrVikas from "../pages/recommendations/ArticleDetailDrVikas";
+import ArticleDetail4BestSelfhelp from "../pages/recommendations/ArticleDetail4BestSelfhelp";
+import ArticleDetail5Unpopular from "../pages/recommendations/ArticleDetail5Unpopular";
+import ArticleDetail3Mustreadselfhelp from "../pages/recommendations/ArticleDetail3Mustreadselfhelp";
+import ArticleDetail5bookscontent from "../pages/recommendations/ArticleDetail5bookscontent";
+import ArticleDetail5HindiNovels from "../pages/recommendations/ArticleDetail5HindiNovels";
 import ForgotPassword from "../components/login/ForgotPassword";
 import Success from "../components/Success";
 import Cancel from "../components/Cancel";
@@ -115,22 +115,22 @@ const router = createBrowserRouter([
     path: "/sign-up",
     element: <SignUp />,
   },
-   {
+  {
     path: "/login",
     element: <Login />,
   },
   {
     path: "/forgot",
-    element:<ForgotPassword/>
+    element: <ForgotPassword />,
   },
   {
     path: "/success",
-    element:<Success/>
+    element: <Success />,
   },
   {
     path: "/cancel",
-    element:<Cancel/>
-  }
+    element: <Cancel />,
+  },
 ]);
 
 export default router;

@@ -1,13 +1,11 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
-import { useFirebase } from "../provider/AuthProvider";
 
 const PrivateRoute = ({ children }) => {
-  const { user,loading } = useFirebase();
-   const location = useLocation();
-  //  const loading = false
-  //  const user = true
+  const location = useLocation();
+   const loading = false
+   const user = true
   if (loading) {
     return (
       <div className="text-center">
