@@ -8,7 +8,7 @@ const DasboardLayout = () => {
       <div>
         <SideBar />
       </div>
-      <div className="m-3 w-full">
+      <div className="md:m-3 sm:m-0 w-full">
         <Outlet className="overflow-scroll " />
       </div>
     </div>

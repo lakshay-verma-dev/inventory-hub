@@ -107,8 +107,8 @@ const ManageBook = () => {
         ) : (
           <Row className="g-4">
             {books.map((book, index) => (
-              <Col md={4} lg={3} key={index} className="mb-4">
-                <Card className="h-100 shadow-sm border-zinc-900">
+              <Col md={4} lg={3} key={index} className="mb-4 ">
+                <Card className="h-100 shadow-2xl border">
                   <Card.Img
                     variant="top"
                     src={book.imageURL || "https://via.placeholder.com/150"}
