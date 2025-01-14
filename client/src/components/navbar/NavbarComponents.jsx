@@ -38,8 +38,8 @@ const NavbarComponents = () => {
       className="shadow-sm colorful-navbar fixed-top px-8 m-0 pt-3"
     >
       <Container fluid>
-        <Navbar.Brand className="text-3xl text-white ">
-          Book Inventory
+        <Navbar.Brand className="text-white ">
+          <span className="text-white text-3xl pl-5">Book Inventory</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

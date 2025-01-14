@@ -37,6 +37,7 @@
 }
 
 .learn-more-button {
+  text-decoration: none;
   background-color: #0056b3;
   border: none;
 }
@@ -94,6 +95,7 @@
 .already {
   color: #f5da72;
   transition: 500ms ease-in;
+  text-decoration: none;
   /* margin: 10px 30px; */
 }
 .already:hover {

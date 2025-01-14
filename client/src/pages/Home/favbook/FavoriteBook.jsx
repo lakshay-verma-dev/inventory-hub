@@ -50,7 +50,10 @@ function FavoriteBook() {
               </li>
             </ul>
             <Button className="explore-more-button" variant="primary">
-              <Link to={"/shop"}>Explore More</Link>
+              <Link to={"/shop"}>
+                {" "}
+                <span className="text-white no-underline">Explore More</span>{" "}
+              </Link>
             </Button>
           </motion.div>
         </Col>

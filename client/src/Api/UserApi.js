@@ -17,6 +17,9 @@ const verifyOtp = async (otpData) => {
 const forgotPassword = async (email) => {
   return axios.post(`${USER_API}/forgot-password`, email);
 };
+const verifyRestOtp = async (resetOtpData) => {
+  return axios.post(`${USER_API}/verify-reset-otp`, resetOtpData);
+};
 
 const resetPassword = async (resetData) => {
   return axios.post(`${USER_API}/reset-password`, resetData);
@@ -26,4 +29,12 @@ const logout = () => {
   localStorage.removeItem("token");
 };
 
-export default { signupRoute, login, verifyOtp, forgotPassword, resetPassword, logout };
+export {
+  signupRoute,
+  login,
+  verifyOtp,
+  forgotPassword,
+  resetPassword,
+  logout,
+  verifyRestOtp,
+};

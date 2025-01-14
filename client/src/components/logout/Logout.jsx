@@ -11,11 +11,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Logout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const {logOut,user} = useFirebase()
   const from = location.state?.from?.pathname || "/";
-  // Function to handle the logout process
   const handleLogout = () => {
-    // Displaying a Toastify notification
     toast.success("You have successfully logged out!", {
       position: "top-right",
       autoClose: 3000,
@@ -48,11 +45,6 @@ const Logout = () => {
           >
             <h2>Ready to Leave?</h2>
             <p>We hope to see you again soon!</p>
-            <Image
-              src={user?.photoURL}
-              roundedCircle
-              className="logout-image mb-4"
-            />
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <Button
                 variant="danger"

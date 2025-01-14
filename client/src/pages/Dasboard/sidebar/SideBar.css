@@ -66,3 +66,39 @@
   border-bottom: 2px solid white;
   border-radius: 5px;
 }
+/* Fixed Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px; /* Adjust width as needed */
+  z-index: 1000;
+  overflow-y: auto; /* Optional: For the sidebar to be scrollable */
+}
+
+/* Content area */
+.content-area {
+  margin-left: 250px; /* This is the width of the sidebar */
+  padding: 20px;
+  height: 100vh;
+  overflow-y: auto; /* Make sure content can scroll */
+}
+
+/* Optional: To prevent scrolling inside the sidebar itself */
+.sidebar .nav-link {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative; /* For small screens, sidebar is no longer fixed */
+    width: 100%;
+  }
+
+  .content-area {
+    margin-left: 0; /* Adjust for smaller screen widths */
+  }
+}

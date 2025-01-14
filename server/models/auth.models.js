@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import  {genSalt, compare, hash } from "bcrypt";
+import { genSalt, compare, hash } from "bcrypt";
 
 const userSchema = new Schema(
   {
@@ -25,14 +25,6 @@ const userSchema = new Schema(
       required: true,
       minlength: 6,
     },
-    otp: {
-      type: Number,
-      required: false,
-    },
-    otpExpiresAt: {
-      type: Date,
-      required: false,
-    },
   },
   {
     timestamps: true,
@@ -49,8 +41,6 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.matchPassword = async function (password) {
   return await compare(password, this.password);
 };
-
-
 
 const User = model("User", userSchema);
 

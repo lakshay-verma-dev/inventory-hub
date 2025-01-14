@@ -14,10 +14,11 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
 import { getBook } from "../../Api/BookApi";
-import "./BookCard.css"; // Assume this file has necessary custom styles
 import { loadStripe } from "@stripe/stripe-js";
 import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer here
 import "react-toastify/dist/ReactToastify.css";
+import "./ShopCard.css";
+import { paymentSession } from "../../Api/PaymentApi";
 
 const categories = [
   "All Books",
@@ -77,18 +78,16 @@ const Shop = () => {
     //   });
     //   return;
     // }
+    console.log(import.meta.env.VITE_PUBLISHABLE_KEY);
 
-    const stripe = await loadStripe(
-      "pk_test_51PuzQeAeVmKMN0IrakS9fpOweJcytIb4dteFs0k4xZOMUyh9QDt3J4pJCAx4I6DxN9UdipdYITwNhzFSN73Xi59F009YKq5khJ"
-    );
-
+    const stripe = await loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY);
     try {
       const response = await paymentSession({
         products: [
           {
             title: item.title,
             price: item.price,
-            imageUrl: item.imageUrl,
+            imageUrl: item.imageURL,
             quantity: 1,
           },
         ],
@@ -98,10 +97,11 @@ const Shop = () => {
       const result = await stripe.redirectToCheckout({ sessionId });
 
       if (result.error) {
-        console.error(result.error.message);
+        console.error("sdjf", result.error.message);
       }
     } catch (error) {
       console.error("Error in payment process:", error);
+      toast.error("Error in payment process");
     }
   };
 
@@ -157,10 +157,10 @@ const Shop = () => {
               sm={6}
               xs={12}
               className="mb-4"
-              style={{ width: "25rem" }}
+              style={{ width: "24rem" }}
             >
               <motion.div
-                className="position-relative cart-card"
+                className="position-relative cart-shop-card"
                 // whileHover={{ scale: 1.05 }}
                 // transition={{ duration: 0.3 }}
               >
@@ -173,7 +173,7 @@ const Shop = () => {
                       <FaShoppingCart />
                     </Button>
                   </div>
-                  <Link to={`/book/${item._id}`}>
+                  <Link to={`/book/${item.id}`}>
                     <Card.Img
                       variant="top"
                       className="h-96"

@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import {
   FaBook,
   FaUser,
-  FaImage,
   FaTag,
   FaInfoCircle,
   FaDollarSign,
@@ -14,27 +13,35 @@ import {
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useParams } from "react-router-dom";
 import { getsingleBook, updatedBook } from "../../../Api/BookApi";
+
 const EditBook = () => {
   const { id } = useParams();
 
   const [bookData, setBookData] = useState({
     bookTitle: "",
     bookAuthor: "",
-    bookImageUrl: "",
     bookCategory: "",
     bookDescription: "",
     bookPrice: "",
   });
+  const [imageFile, setImageFile] = useState(null);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const categories = [
-    { id: 1, name: "Fiction" },
-    { id: 2, name: "Non-fiction" },
-    { id: 3, name: "Science" },
-    { id: 4, name: "Biography" },
-    { id: 5, name: "Horror" },
+    "Fiction",
+    "Non-fiction",
+    "Science",
+    "Biography",
+    "Horror",
+    "Fantasy",
+    "Romance",
+    "History",
+    "Mystery",
+    "Thriller",
+    "Children's Books",
+    "Self-help",
   ];
 
   useEffect(() => {
@@ -44,7 +51,6 @@ const EditBook = () => {
         setBookData({
           bookTitle: response.data.title,
           bookAuthor: response.data.author,
-          bookImageUrl: response.data.imageUrl,
           bookCategory: response.data.category,
           bookDescription: response.data.description,
           bookPrice: response.data.price,
@@ -63,8 +69,6 @@ const EditBook = () => {
     const newErrors = {};
     if (!bookData.bookTitle) newErrors.bookTitle = "Book title is required";
     if (!bookData.bookAuthor) newErrors.bookAuthor = "Author name is required";
-    if (!bookData.bookImageUrl)
-      newErrors.bookImageUrl = "Book image URL is required";
     if (!bookData.bookCategory)
       newErrors.bookCategory = "Book category is required";
     if (!bookData.bookDescription)
@@ -86,30 +90,39 @@ const EditBook = () => {
     setErrors(newErrors);
   };
 
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     const formErrors = validate();
     if (Object.keys(formErrors).length === 0) {
       setSubmitting(true);
-      setBookData({
-        bookTitle: "",
-        bookAuthor: "",
-        bookImageUrl: "",
-        bookCategory: "",
-        bookDescription: "",
-        bookPrice: "",
-      });
-      const updateBook = {
-        title: bookData.bookTitle,
-        author: bookData.bookAuthor,
-        imageUrl: bookData.bookImageUrl,
-        category: bookData.bookCategory,
-        description: bookData.bookDescription,
-        price: bookData.bookPrice,
-      };
+
+      const formData = new FormData();
+      formData.append("title", bookData.bookTitle);
+      formData.append("author", bookData.bookAuthor);
+      formData.append("category", bookData.bookCategory);
+      formData.append("description", bookData.bookDescription);
+      formData.append("price", bookData.bookPrice);
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
       try {
-        await updatedBook(id, updateBook);
+        await updatedBook(id, formData); // Ensure this API call accepts `FormData` and sends a `multipart/form-data` request
         toast.success("Book updated successfully!");
+
+        // Reset fields after successful update
+        setBookData({
+          bookTitle: "",
+          bookAuthor: "",
+          bookCategory: "",
+          bookDescription: "",
+          bookPrice: "",
+        });
+        setImageFile(null);
       } catch (error) {
         console.error("There was an error updating the book!", error);
         toast.error("Failed to update the book.");
@@ -153,13 +166,11 @@ const EditBook = () => {
             <h2 className="text-3xl font-bold">Update the book details</h2>
           </Col>
         </Row>
-        <Form onSubmit={handleUpdate}>
+        <Form onSubmit={handleUpdate} encType="multipart/form-data">
           <Row className="mb-3">
             <Col md={6}>
               <Form.Group controlId="formBookTitle">
-                <Form.Label className="flex items-center font-semibold">
-                  <FaBook className="mr-2" /> <span>Book Title</span>
-                </Form.Label>
+                <Form.Label className="font-semibold">Book Title</Form.Label>
                 <Form.Control
                   type="text"
                   name="bookTitle"
@@ -175,9 +186,7 @@ const EditBook = () => {
             </Col>
             <Col md={6}>
               <Form.Group controlId="formAuthorName">
-                <Form.Label className="flex items-center font-semibold">
-                  <FaUser className="mr-2" /> <span>Author Name</span>
-                </Form.Label>
+                <Form.Label className="font-semibold">Author Name</Form.Label>
                 <Form.Control
                   type="text"
                   name="bookAuthor"
@@ -194,40 +203,29 @@ const EditBook = () => {
           </Row>
           <Row className="mb-3">
             <Col md={6}>
-              <Form.Group controlId="formBookImageUrl">
-                <Form.Label className="flex items-center font-semibold">
-                  <FaImage className="mr-2" /> <span>Book Image URL</span>
-                </Form.Label>
+              <Form.Group controlId="formBookImage">
+                <Form.Label className="font-semibold">Book Image</Form.Label>
                 <Form.Control
-                  type="text"
-                  name="bookImageUrl"
-                  value={bookData.bookImageUrl}
-                  onChange={handleChange}
-                  isInvalid={!!errors.bookImageUrl}
-                  placeholder="Enter Image URL"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
                 />
-                <Form.Control.Feedback type="invalid">
-                  {errors.bookImageUrl}
-                </Form.Control.Feedback>
               </Form.Group>
             </Col>
             <Col md={6}>
               <Form.Group controlId="formBookCategory">
-                <Form.Label className="flex items-center font-semibold">
-                  <FaTag className="mr-2" /> <span>Book Category</span>
-                </Form.Label>
+                <Form.Label className="font-semibold">Category</Form.Label>
                 <Form.Control
                   as="select"
                   name="bookCategory"
                   value={bookData.bookCategory}
                   onChange={handleChange}
                   isInvalid={!!errors.bookCategory}
-                  placeholder="Select a category"
                 >
                   <option value="">Select a category</option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.name}>
-                      {cat.name}
+                  {categories.map((cat, index) => (
+                    <option key={index} value={cat}>
+                      {cat}
                     </option>
                   ))}
                 </Form.Control>
@@ -240,34 +238,30 @@ const EditBook = () => {
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId="formBookDescription">
-                <Form.Label className="flex items-center font-semibold">
-                  <FaInfoCircle className="mr-2" /> <span>Description</span>
-                </Form.Label>
+                <Form.Label className="font-semibold">Description</Form.Label>
                 <Form.Control
                   as="textarea"
                   name="bookDescription"
                   value={bookData.bookDescription}
                   onChange={handleChange}
                   isInvalid={!!errors.bookDescription}
-                  placeholder="Enter Book Description"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.bookDescription}
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
+          </Row>
+          <Row className="mb-3">
             <Col md={6}>
               <Form.Group controlId="formBookPrice">
-                <Form.Label className="flex items-center font-semibold">
-                  <FaDollarSign className="mr-2" /> <span>Price</span>
-                </Form.Label>
+                <Form.Label className="font-semibold">Price</Form.Label>
                 <Form.Control
                   type="text"
                   name="bookPrice"
                   value={bookData.bookPrice}
                   onChange={handleChange}
                   isInvalid={!!errors.bookPrice}
-                  placeholder="Enter Book Price"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.bookPrice}
@@ -281,20 +275,7 @@ const EditBook = () => {
             disabled={submitting}
             className="w-full mt-4"
           >
-            {submitting ? (
-              <>
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />{" "}
-                Updating...
-              </>
-            ) : (
-              "Update Book"
-            )}
+            {submitting ? "Updating..." : "Update Book"}
           </Button>
         </Form>
         <ToastContainer />

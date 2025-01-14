@@ -10,9 +10,9 @@ import "./SingleBook.css"; // Custom CSS
 
 const SingleBook = () => {
   const { id } = useParams();
+
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { user } = useFirebase(); // Corrected user context
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,51 +32,35 @@ const SingleBook = () => {
   }, [id]);
 
   const makePayment = async (item) => {
-    if (!user) {
-      // Check if the user is logged in
-      toast.error("Please log in to purchase the product.", {
-        // position: toast.POSITION.TOP_CENTER,
-      });
-      return;
-    }
+    // if (!user) {
+    //   toast.error("No user logged in. Please log in to purchase the product.", {
+    //     // position: toast.POSITION.TOP_CENTER,
+    //   });
+    //   return;
+    // }
 
-    const stripe = await loadStripe(
-      "pk_test_51PuzQeAeVmKMN0IrakS9fpOweJcytIb4dteFs0k4xZOMUyh9QDt3J4pJCAx4I6DxN9UdipdYITwNhzFSN73Xi59F009YKq5khJ"
-    );
-
+    const stripe = await loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY);
     try {
-      const response = await paymentSession(
-        {
-          products: [
-            {
-              title: item.title,
-              price: item.price,
-              imageUrl: item.imageUrl,
-              quantity: 1, // Single item purchase
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
+      const response = await paymentSession({
+        products: [
+          {
+            title: item.title,
+            price: item.price,
+            imageUrl: item.imageURL,
+            quantity: 1,
           },
-        }
-      );
+        ],
+      });
 
       const sessionId = response.data.id;
       const result = await stripe.redirectToCheckout({ sessionId });
 
       if (result.error) {
         console.error(result.error.message);
-        toast.error("Failed to redirect to checkout. Please try again.", {
-          // position: toast.POSITION.TOP_CENTER,
-        });
       }
     } catch (error) {
       console.error("Error in payment process:", error);
-      toast.error("Payment process failed. Please try again later.", {
-        // position: toast.POSITION.TOP_CENTER,
-      });
+      toast.error("Error in payment process");
     }
   };
 
@@ -106,7 +90,7 @@ const SingleBook = () => {
             <Card.Img
               variant="top"
               className="rounded h-96"
-              src={book.imageUrl}
+              src={book.imageURL}
               alt={book.title}
               style={{ boxShadow: "2px 2px 5px grey" }}
             />

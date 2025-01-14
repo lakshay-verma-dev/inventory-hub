@@ -42,7 +42,7 @@ function Cart() {
                 <Row className="align-items-center">
                   <Col md={2} className="text-center">
                     <Image
-                      src={item.imageUrl}
+                      src={item.imageURL}
                       alt={item.title}
                       className="cart-item-image"
                       fluid

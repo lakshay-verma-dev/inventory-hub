@@ -9,7 +9,7 @@ import ReviewSection from "../review/ReviewSection";
 const Home = () => {
   return (
     <div
-      // className="bg-gray-50"
+      className="bg-gray-50"
     >
       <Banner />
       <BestSellersBooks />

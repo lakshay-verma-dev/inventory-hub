@@ -1,7 +1,8 @@
 /* Cart.css */
 
-.cart-card {
+.cart-shop-card {
   border-radius: 10px;
+  border: 1px solid gray;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease-in-out;
   overflow: hidden;
@@ -9,9 +10,9 @@
   transition: 200ms;
 }
 
-.cart-card:hover {
-  /* transform: scale(1.05); */
-  box-shadow: 0px 10px 4px rgba(0, 0, 0, 0.612);
+.cart-shop-card:hover {
+  transform: scale(1.01);
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.612);
 }
 
 .card-img-top {

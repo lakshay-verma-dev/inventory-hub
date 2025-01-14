@@ -43,15 +43,16 @@ const BookCards = ({ books, headline }) => {
       >
         {books.map((item, index) => (
           <SwiperSlide key={item.id}>
-            <Link to={`/book/${item._id}`}>
-              <Col key={index} md={4} sm={6} xs={12} style={{ width: "23rem" }}>
+            <Link to={`/book/${item.id}`}>
+              <Col key={index} md={4} sm={6} xs={12} style={{ width: "22rem" }}>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  // whileHover={{ scale: 1.1 }}
-                  // whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="cart-card"
                 >
-                  <Card className="h-100 cart-card">
+                  <Card className="h-80">
                     {/* <div className="shopping-icon">
                       <Button
                         onClick={() => handleAddToCart(item)}
@@ -60,11 +61,11 @@ const BookCards = ({ books, headline }) => {
                         <FaShoppingCart />
                       </Button>
                     </div> */}
-                    <Link to={`/book/${item._id}`}>
+                    <Link to={`/book/${item.id}`}>
                       <Card.Img
                         variant="top"
                         className="h-96"
-                        src={item.imageUrl}
+                        src={item.imageURL}
                       />
                     </Link>
                     <Card.Body className="text-black">
@@ -72,21 +73,21 @@ const BookCards = ({ books, headline }) => {
                         {item.title}
                       </Card.Title>
                       <Card.Text className="m-0 p-0">
-                        <small className="text-muted">
-                          by <b>{item.author}</b>
-                        </small>
+                        <h3>
+                          {" "}
+                          By <b>{item.author}</b>
+                        </h3>
                       </Card.Text>
                       <Card.Text className="text-primary">
                         ${item.price}
                       </Card.Text>
 
-                      <Link>
-                        {" "}
+                      <Link to={`/book/${item.id}`}>
                         <Button
-                          className="explore-more-button w-full hover:bg-blue-1000"
+                          className="explore-more-button w-full hover:bg-blue-1000 mt-0"
                           variant="primary"
                         >
-                          Buy Now{" "}
+                          Check Out
                         </Button>
                       </Link>
                     </Card.Body>

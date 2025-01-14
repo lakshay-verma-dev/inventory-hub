@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
 import { motion } from "framer-motion";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeft, FaUser } from "react-icons/fa";
-import "./SignUp.css";
-import signup from "./signup.jpg";
 import ReCAPTCHA from "react-google-recaptcha";
-
-// import {setDoc}
+import { signupRoute, verifyOtp } from "../../Api/UserApi";
+import signup from "./signup.jpg";
+import "./SignUp.css";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/userSlice";
 
 const SignUp = () => {
-  const firebase = useFirebase();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
   });
+  const [otp, setOTP] = useState("");
+  const [otpError, setOTPError] = useState("");
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState("");
@@ -61,20 +63,6 @@ const SignUp = () => {
   };
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
-  const { user, loading } = useFirebase();
-
-  // useEffect(() => {
-  //   if (user) {
-  //     if (user.emailVerified) {
-  //       toast.success("Email verified successfully!");
-  //       navigate(from, { replace: true });
-  //     } else {
-  //       setIsVerified(false);
-  //     }
-  //   }
-  // }, [user, navigate, from]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -86,34 +74,24 @@ const SignUp = () => {
 
       setIsLoading(true);
       try {
-        const userCred = await firebase.signUpWithUserNameandPassword(
-          formData.email,
-          formData.password
-        );
-        const user = userCred.user;
-        await firebase.sendEmailVerification(user);
-        console.log(user);
+        const response = await signupRoute({ email: formData.email });
         setVerificationSent(true);
         setIsLoading(false);
-        setFirebaseError("");
         setRecaptchaToken("");
-        toast.success("Verification email sent! Please verify your email.");
-      } catch (err) {
-        console.error("Error during sign-up:", err);
+        toast.success(
+          `OTP has been sent to your email ${formData.email} . It will expire in 5 minutes. Please enter it to verify your account.`
+        );
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.error ||
+          "An error occurred during sign-up. Please try again later.";
+        toast.error(errorMessage);
         setIsLoading(false);
-        if (err.code === "auth/email-already-in-use") {
-          setFirebaseError(
-            "This email is already in use. Please try logging in."
-          );
-        } else {
-          setFirebaseError(
-            "An error occurred during sign-up. Please try again."
-          );
-        }
-        toast.error("An error occurred during sign-up. Please try again.");
+      } finally {
+        setIsLoading(false);
       }
     } else {
-      toast.error("Please correct the errors in the form.");
+      toast.error("Please correct the errors in the form and try again.");
     }
   };
 
@@ -121,37 +99,77 @@ const SignUp = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
-    setFirebaseError(""); // Reset Firebase error on input change
   };
 
-  const handleGoogleSignIn = async () => {
-    setIsLoading(true);
-    try {
-      await firebase.loginWithGoogle();
-      toast.success("Google Sign-In Successful!");
-      navigate(from, { replace: true });
-    } catch (err) {
-      console.error("Error during Google Sign-In:", err);
-      setIsLoading(false);
-      setFirebaseError(
-        "An error occurred during Google Sign-In. Please try again."
-      );
-      toast.error("An error occurred during Google Sign-In. Please try again.");
-    }
+  const handleOTPChange = (e) => {
+    setOTP(e.target.value);
+    setOTPError("");
   };
 
   const onChangeCaptcha = (token) => {
     setRecaptchaToken(token);
   };
 
+  const dispatch = useDispatch()
   const handleVerifyEmail = async () => {
-    toast.success("Please verify your email.");
-    navigate(from, { replace: true });
+    if (!otp) {
+      setOTPError("OTP is required.");
+      toast.error("Please enter the OTP");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const response = await verifyOtp({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+        otp,
+      });
+
+      // Log the response data
+      console.log("token", response.data.token);
+
+      // Prepare user data
+      const userData = {
+        token: response.data.token,
+        user: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+        },
+      };
+
+      // Store data in localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      // Dispatch the setUser action to store the data in Redux
+      dispatch(setUser(userData));
+
+      toast.success("Email verified successfully! Redirecting to home...");
+      setTimeout(() => navigate("/"), 3000);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+      });
+      setOTP("");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error ||
+        "Failed to verify the OTP. Please try again.";
+      toast.error(errorMessage);
+      setOTPError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleBackToSignUp = () => {
-    setVerificationSent(false); // Reset to show the sign-up form again
+    setVerificationSent(false);
   };
+
   const handleContinueWithoutAccount = () => {
     navigate("/");
   };
@@ -176,27 +194,21 @@ const SignUp = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
             >
-              <h1
-                className="md:text-7xl sm:text-5xl xsm:text-3xl text-white"
-                style={{ textAlign: "left" }}
-              >
+              <h1 className="text-white" style={{ textAlign: "left" }}>
                 Welcome!
               </h1>
-              <div className="w-[17%] border-b-2" />
-              <p className="mt-4">
+              <p className="mt-4 text-white">
                 Welcome to our vibrant community! By signing up, you unlock
                 access to a world of opportunities tailored just for you.
               </p>
 
-              <Button className="learn-more-button">
-                <Link to={"/"}>Learn More</Link>
+              <Button className="learn-more-button text-white">
+                Learn More
               </Button>
-              {/* <br /> */}
               <Button
                 variant="outline-light"
                 className="ml-3 continue-without-account-btn"
                 onClick={handleContinueWithoutAccount}
-                // style={}
               >
                 Continue without an account
               </Button>
@@ -284,20 +296,14 @@ const SignUp = () => {
                     <Form.Control.Feedback type="invalid">
                       {errors.password}
                     </Form.Control.Feedback>
-                    <ReCAPTCHA
-                      sitekey="6LcHuTIqAAAAALM_mxJdYJ1Fblu5gwv5rR2EF2JP"
-                      onChange={onChangeCaptcha}
-                      className="mt-3"
-                    />
                   </Form.Group>
-                  {/* Display Firebase Error if it exists */}
-                  {firebaseError && (
-                    <div className="alert alert-danger mt-3">
-                      {firebaseError}
-                    </div>
-                  )}
 
-                  {/* Display Loader if loading */}
+                  <ReCAPTCHA
+                    sitekey="6LcHuTIqAAAAALM_mxJdYJ1Fblu5gwv5rR2EF2JP"
+                    onChange={onChangeCaptcha}
+                    className="mt-3"
+                  />
+
                   {isLoading && (
                     <div className="text-center mt-3">
                       <Spinner animation="border" variant="primary" />
@@ -308,7 +314,7 @@ const SignUp = () => {
                     variant="success"
                     type="submit"
                     className="signup-button"
-                    disabled={isLoading} // Disable button while loading
+                    disabled={isLoading}
                   >
                     Sign Up
                   </Button>
@@ -322,19 +328,6 @@ const SignUp = () => {
                     </p>
                   </div>
                 </Form>
-                <Button
-                  variant="light"
-                  className="google-signin-button mt-2"
-                  onClick={handleGoogleSignIn}
-                >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png"
-                    // src={googlelogo}
-                    alt="Google logo"
-                    className="google-logo mr-2"
-                  />
-                  Sign in with Google
-                </Button>
               </motion.div>
             ) : (
               <div className="text-center mt-4">
@@ -342,22 +335,36 @@ const SignUp = () => {
                   Email Verification Sent
                 </h2>
                 <p className="text-white mt-4">
-                  We've sent a verification email to{" "}
-                  <strong className="already">{formData.email}</strong>. Please
-                  verify your email and then log in.
+                  We've sent a 6-digit OTP to your email address
+                  <strong className="already"> {formData.email}</strong>. Please
+                  enter it below to verify your account. The OTP will expire in
+                  5 minutes.
                 </p>
+                <br />
+                <Form.Group controlId="formOTP">
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter your OTP"
+                    value={otp}
+                    onChange={handleOTPChange}
+                    isInvalid={!!otpError}
+                    className="mb-2 py-1"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {otpError}
+                  </Form.Control.Feedback>
+                </Form.Group>
                 <Button
                   onClick={handleVerifyEmail}
                   className="signup-button"
-                  // style={{ minWidth: "150px" }}
+                  disabled={isLoading}
                 >
-                  Verify Email
+                  {isLoading ? "Verifying..." : "Verify OTP"}
                 </Button>
                 <div className="text-left">
-                  {" "}
                   <Button
                     variant="link"
-                    className="text-left text-decoration-none d-flex"
+                    className="text-decoration-none d-flex text-orange-800"
                     onClick={handleBackToSignUp}
                   >
                     <FaArrowLeft className="mt-1 mr-1" />

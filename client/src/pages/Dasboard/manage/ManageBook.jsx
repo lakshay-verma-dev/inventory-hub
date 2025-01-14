@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { deleteBook, getBook } from "../../../Api/BookApi";
+import "./ManageBook.css"
 
 const ManageBook = () => {
   const [books, setBooks] = useState([]);
@@ -107,46 +108,46 @@ const ManageBook = () => {
         ) : (
           <Row className="g-4">
             {books.map((book, index) => (
-              <Col md={4} lg={3} key={index} className="mb-4 ">
-                <Card className="h-100 shadow-2xl border">
-                  <Card.Img
-                    variant="top"
-                    src={book.imageURL || "https://via.placeholder.com/150"}
-                    alt={book.title}
-                    style={{ height: "200px", objectFit: "cover" }}
-                  />
-                  <Card.Body>
-                    <Card.Title>{truncateText(book.title, 25)}</Card.Title>
-                    <Card.Text>
-                      <strong>Author:</strong> {truncateText(book.author, 20)}
-                    </Card.Text>
-                    <Card.Text>
-                      <strong>Price:</strong> ${book.price}
-                    </Card.Text>
-                  </Card.Body>
-                  <Card.Footer className="d-flex justify-content-between">
-                    <Button
-                      variant="outline-primary"
-                      className="flex-grow-1 me-2 book-action-btn"
-                    >
-                      <Link
-                        to={`/admin/manage/edit-book/${book.id}`}
-                        className="text-decoration-none d-flex align-items-center gap-2"
+              <Col md={4} lg={3} key={index} className="mb-4">
+                  <Card className="h-100 manage-card">
+                    <Card.Img
+                      variant="top"
+                      src={book.imageURL || "https://via.placeholder.com/150"}
+                      alt={book.title}
+                      style={{ height: "200px", objectFit: "cover" }}
+                    />
+                    <Card.Body>
+                      <Card.Title>{truncateText(book.title, 25)}</Card.Title>
+                      <Card.Text>
+                        <strong>Author:</strong> {truncateText(book.author, 20)}
+                      </Card.Text>
+                      <Card.Text>
+                        <strong>Price:</strong> ${book.price}
+                      </Card.Text>
+                    </Card.Body>
+                    <Card.Footer className="d-flex justify-content-between">
+                      <Button
+                        variant="outline-primary"
+                        className="flex-grow-1 me-2 book-action-btn"
                       >
-                        <AiFillEdit />
-                        Edit
-                      </Link>
-                    </Button>
-                    <Button
-                      variant="outline-danger"
-                      onClick={() => confirmDelete(book.id)}
-                      className="flex-grow-1 book-action-btn d-flex align-items-center gap-2"
-                    >
-                      <AiFillDelete />
-                      Delete
-                    </Button>
-                  </Card.Footer>
-                </Card>
+                        <Link
+                          to={`/admin/manage/edit-book/${book.id}`}
+                          className="text-decoration-none d-flex align-items-center gap-2 hover:text-white"
+                        >
+                          <AiFillEdit />
+                          Edit
+                        </Link>
+                      </Button>
+                      <Button
+                        variant="outline-danger"
+                        onClick={() => confirmDelete(book.id)}
+                        className="flex-grow-1 book-action-btn d-flex align-items-center gap-2"
+                      >
+                        <AiFillDelete />
+                        Delete
+                      </Button>
+                    </Card.Footer>
+                  </Card>
               </Col>
             ))}
           </Row>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -6,10 +6,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeft, FaUser } from "react-icons/fa";
 import signup from "./signup.jpg";
+import { login } from "../../Api/UserApi";
 
 const Login = () => {
-  const firebase = useFirebase();
-  console.log("firebase", firebase);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,6 +22,15 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    // Clear form data on mount to ensure no pre-filled values
+    setFormData({ email: "", password: "" });
+  }, []);
 
   const validate = () => {
     let isValid = true;
@@ -45,63 +53,39 @@ const Login = () => {
     return isValid;
   };
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (validate()) {
       setIsLoading(true);
-      firebase
-        .signInWithEmailAndPasswordHandler(formData.email, formData.password)
-        .then((value) => {
-          toast.success("Login Successful!");
-          console.log("Success! ", value);
-          setFormData({ email: "", password: "" });
-          setErrors({ email: "", password: "" });
-          setFirebaseError("");
-          navigate(from, { replace: true });
-        })
-        .catch((err) => {
-          console.log("Error during login", err);
-          setFirebaseError("User not Found, Check Your Data");
-          toast.error("Login failed. Please try again.");
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+      try {
+        const response = await login(formData);
+        toast.success("Email verified successfully! Redirecting to home...");
+        setTimeout(() => navigate(from, { replace: true }), 2000);
+        setFormData({ email: "", password: "" });
+        setErrors({ email: "", password: "" });
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.error ||
+          "An error occurred during log in. Please try again later.";
+        toast.error(errorMessage);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       toast.error("Please correct the errors in the form.");
     }
   };
-   const handleGoogleSignIn = async () => {
-     setIsLoading(true);
-     try {
-       await firebase.loginWithGoogle();
-       toast.success("Google Sign-In Successful!");
-       navigate(from, { replace: true });
-     } catch (err) {
-       console.error("Error during Google Sign-In:", err);
-       setIsLoading(false);
-       setFirebaseError(
-         "An error occurred during Google Sign-In. Please try again."
-       );
-       toast.error(
-         "An error occurred during Google Sign-In. Please try again."
-       );
-     }
-   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
-    setFirebaseError("");
   };
-   const handleBackClick = () => {
-     navigate("/"); // Go back to the previous page
-   };
+
+  const handleBackClick = () => {
+    navigate("/"); // Go back to the previous page
+  };
 
   return (
     <div
@@ -131,7 +115,18 @@ const Login = () => {
                 transition={{ duration: 1 }}
               >
                 <h1 className="font-semibold text-white">Login Here</h1>
-                <Form onSubmit={handleLogin}>
+                <Form autoComplete="off" onSubmit={handleLogin}>
+                  <input
+                    type="text"
+                    style={{ display: "none" }}
+                    autoComplete="off"
+                  />
+                  <input
+                    type="password"
+                    style={{ display: "none" }}
+                    autoComplete="new-password"
+                  />
+
                   <Form.Group controlId="formEmail">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
@@ -141,6 +136,7 @@ const Login = () => {
                       value={formData.email}
                       onChange={handleChange}
                       isInvalid={!!errors.email}
+                      autoComplete="off"
                       className="mb-2"
                     />
                     <Form.Control.Feedback type="invalid">
@@ -157,6 +153,7 @@ const Login = () => {
                       value={formData.password}
                       onChange={handleChange}
                       isInvalid={!!errors.password}
+                      autoComplete="off"
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.password}
@@ -169,11 +166,6 @@ const Login = () => {
                     </div>
                   )}
 
-                  {!isLoading && firebaseError && (
-                    <div className="alert alert-danger mt-3">
-                      {firebaseError}
-                    </div>
-                  )}
                   <br />
                   <p>
                     <Link to="/forgot" className="already">
@@ -199,14 +191,9 @@ const Login = () => {
                       Here{" "}
                     </p>
                   </div>
-                  <Button
-                    variant="light"
-                    className="google-signin-button mt-2"
-                    onClick={handleGoogleSignIn}
-                  >
+                  <Button variant="light" className="google-signin-button mt-2">
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png"
-                      // src={googlelogo}
                       alt="Google logo"
                       className="google-logo mr-2"
                     />

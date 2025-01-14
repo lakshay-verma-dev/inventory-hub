@@ -2,47 +2,91 @@ import { generateToken } from "../utils/jwt.js";
 import sendEmail from "../utils/email.js";
 import User from "../models/auth.models.js";
 
+// Generate a random 6-digit OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
 
+// In-memory store for OTPs (should use a database or cache like Redis in production)
+const otpStore = new Map();
+
+/**
+ * Register a new user by sending an OTP for verification.
+ */
 const register = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { email } = req.body;
 
-    if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({ error: "All fields are required" });
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
     }
 
+    // Check if email already exists in the database
     const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ error: "User already exists" });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email is already registered" });
+    }
 
     const otp = generateOTP();
-    const otpExpiresAt = Date.now() + 5 * 60 * 1000;
-    
+    const otpExpiresAt = Date.now() + 5 * 60 * 1000; // OTP expires in 5 minutes
+
+    otpStore.set(email, { otp, otpExpiresAt });
+
+    // Send OTP email
     await sendEmail(
       email,
       "Your OTP for Verification",
-      `Your OTP is ${otp}. It will expire in 5 minutes.`
+      `Your OTP is ${otp}. It will expire in 5 minutes.\nBest regards, Book Inventory`
     );
+
+    res.status(200).json({ message: "OTP sent to email" });
+  } catch (error) {
+    console.error("Error during registration:", error);
+    res.status(500).json({ error: "Failed to send OTP" });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  try {
+    const { email, otp, firstName, lastName, password } = req.body;
+
+    if (!email || !otp || !firstName || !lastName || !password) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const storedOtpData = otpStore.get(email);
+
+    if (!storedOtpData) {
+      return res.status(400).json({ error: "OTP not found or expired" });
+    }
+
+    const { otp: storedOtp, otpExpiresAt } = storedOtpData;
+
+    if (parseInt(otp) !== storedOtp || Date.now() > otpExpiresAt) {
+      return res.status(400).json({ error: "Invalid or expired OTP" });
+    }
+
     const user = await User.create({
       firstName,
       lastName,
       email,
       password,
-      otp,
-      otpExpiresAt,
     });
+    otpStore.delete(email);
 
-    res.status(201).json({ message: "User registered successfully", user });
+    const token = generateToken(user);
+    res.status(201).json({ message: "Verification successful", token });
   } catch (error) {
-    console.error("Error registering user:", error);
-    res.status(500).json({ error: "Registration failed" });
+    console.error("Error verifying OTP:", error);
+    res.status(500).json({ error: "Verification failed" });
   }
 };
 
+/**
+ * Login a user with email and password.
+ */
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ error: "User not found" });
 
@@ -57,18 +101,22 @@ const login = async (req, res) => {
   }
 };
 
+/**
+ * Send OTP for password reset.
+ */
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
+
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    user.otp = otp;
-    user.otpExpiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
-    await user.save();
+    const otp = generateOTP();
+    const otpExpiresAt = Date.now() + 5 * 60 * 1000;
 
-    await sendEmail(email, "Password Reset OTP", `Your OTP: ${otp}`);
+    otpStore.set(email, { otp, otpExpiresAt });
+
+    await sendEmail(email, "Password Reset OTP", `Your OTP is: ${otp}`);
     res.status(200).json({ message: "OTP sent to email" });
   } catch (error) {
     console.error("Error sending OTP:", error);
@@ -76,42 +124,48 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-const verifyOtp = async (req, res) => {
+/**
+ * Verify OTP for password reset.
+ */
+const verifyResetOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
+
     if (!email || !otp) {
-      return res.status(400).json({ error: "Email and OTP are required" });
-    }
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(400).json({ error: "All fields are required" });
     }
 
-    // Check if OTP is valid
-    if (user.otp !== parseInt(otp) || Date.now() > user.otpExpiresAt) {
+    const storedOtpData = otpStore.get(email);
+
+    if (!storedOtpData) {
+      return res.status(400).json({ error: "OTP not found or expired" });
+    }
+
+    const { otp: storedOtp, otpExpiresAt } = storedOtpData;
+
+    if (parseInt(otp) !== storedOtp || Date.now() > otpExpiresAt) {
       return res.status(400).json({ error: "Invalid or expired OTP" });
     }
 
-    user.otp = null;
-    user.otpExpiresAt = null;
-    await user.save();
-    const token = generateToken(user);
-    res.status(200).json({ message: "Verification successful", token });
+    otpStore.delete(email);
+    res.status(200).json({ message: "OTP verified successfully" });
   } catch (error) {
     console.error("Error verifying OTP:", error);
     res.status(500).json({ error: "Verification failed" });
   }
 };
 
+/**
+ * Reset the user's password.
+ */
 const resetPassword = async (req, res) => {
   try {
     const { email, newPassword } = req.body;
+
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    user.password = newPassword;
-    user.otp = undefined;
-    user.otpExpiresAt = undefined;
+    user.password = newPassword; // Assuming password hashing middleware in User model
     await user.save();
 
     res.status(200).json({ message: "Password reset successful" });
@@ -121,4 +175,11 @@ const resetPassword = async (req, res) => {
   }
 };
 
-export { register, login, verifyOtp, resetPassword, forgotPassword };
+export {
+  register,
+  login,
+  verifyOtp,
+  resetPassword,
+  forgotPassword,
+  verifyResetOtp,
+};
