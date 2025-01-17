@@ -3,6 +3,11 @@ import { genSalt, compare, hash } from "bcrypt";
 
 const userSchema = new Schema(
   {
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    }, // UUID field
     firstName: {
       type: String,
       required: true,

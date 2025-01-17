@@ -1,6 +1,7 @@
 import { generateToken } from "../utils/jwt.js";
 import sendEmail from "../utils/email.js";
 import User from "../models/auth.models.js";
+import { v4 as uuidv4 } from "uuid";
 
 // Generate a random 6-digit OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
@@ -53,27 +54,40 @@ const verifyOtp = async (req, res) => {
     }
 
     const storedOtpData = otpStore.get(email);
-
     if (!storedOtpData) {
       return res.status(400).json({ error: "OTP not found or expired" });
     }
 
     const { otp: storedOtp, otpExpiresAt } = storedOtpData;
-
     if (parseInt(otp) !== storedOtp || Date.now() > otpExpiresAt) {
       return res.status(400).json({ error: "Invalid or expired OTP" });
     }
 
-    const user = await User.create({
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
+    // Create the new user (password will be hashed automatically)
+    const newUser = await User.create({
+      id: uuidv4(),
       firstName,
       lastName,
       email,
       password,
     });
+    // Remove OTP data from the store
     otpStore.delete(email);
 
-    const token = generateToken(user);
-    res.status(201).json({ message: "Verification successful", token });
+    // Generate token (assuming generateToken function exists)
+    const token = generateToken(newUser);
+
+    // Return the success response
+    res.status(201).json({
+      message: "Verification successful",
+      token,
+    });
   } catch (error) {
     console.error("Error verifying OTP:", error);
     res.status(500).json({ error: "Verification failed" });

@@ -4,10 +4,18 @@ import uploadImageToCloudinary from "../utils/cloudnary.js";
 
 const uploadBook = async (req, res) => {
   try {
-    const { title, author, price, description, category } = req.body;
+    const { title, author, price, description, category, user } = req.body;
     const file = req.file;
 
-    if (!title || !author || !price || !description || !category || !file) {
+    if (
+      !title ||
+      !author ||
+      !price ||
+      !description ||
+      !category ||
+      !file ||
+      !user
+    ) {
       return res.status(400).json({ error: "All fields are required" });
     }
     const existingBook = await Book.findOne({ title });
@@ -31,7 +39,7 @@ const uploadBook = async (req, res) => {
       console.error("Error uploading image to Cloudinary:", uploadError);
       return res.status(500).json({ error: "Failed to upload image" });
     }
-       const newBook = await Book.create({
+    const newBook = await Book.create({
       id: uuidv4(),
       title,
       author,
@@ -39,6 +47,7 @@ const uploadBook = async (req, res) => {
       description,
       imageURL,
       category,
+      user,
     });
 
     res
@@ -51,16 +60,39 @@ const uploadBook = async (req, res) => {
 };
 const getAllBooks = async (req, res) => {
   try {
-    const books = await Book.find();
-    if (!books) {
+    const books = await Book.find(); // Fetch all books
+    if (!books.length) {
       return res.status(404).json({ error: "No books found" });
     }
+
     res.status(200).json(books);
   } catch (error) {
     console.error("Error fetching books:", error);
     res.status(500).json({ error: "Failed to fetch books" });
   }
 };
+const getUserBooks = async (req, res) => {
+  try {
+    const { userData } = req.body; // Extract userData from the request body
+    if (!userData) {
+      return res.status(400).json({ error: "User data is required" });
+    }
+
+    const books = await Book.find({ user: userData }); // Fetch books for the specific user
+    if (!books.length) {
+      return res
+        .status(404)
+        .json({ error: "No books found for the specified user" });
+    }
+
+    res.status(200).json(books);
+  } catch (error) {
+    console.error("Error fetching books for user:", error);
+    res.status(500).json({ error: "Failed to fetch books" });
+  }
+};
+
+
 
 const updateBook = async (req, res) => {
   try {
@@ -129,4 +161,11 @@ const getSingleBook = async (req, res) => {
   }
 };
 
-export { uploadBook, getAllBooks, updateBook, deleteBook, getSingleBook };
+export {
+  uploadBook,
+  getAllBooks,
+  updateBook,
+  deleteBook,
+  getSingleBook,
+  getUserBooks,
+};

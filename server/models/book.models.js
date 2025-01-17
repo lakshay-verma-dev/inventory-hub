@@ -2,6 +2,10 @@ import { model, Schema } from "mongoose";
 
 const bookSchema = new Schema(
   {
+    user: {
+      type: String,
+      required:true,
+    },
     id: {
       type: String,
       required: true,
