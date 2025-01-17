@@ -6,7 +6,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeft, FaUser } from "react-icons/fa";
 import signup from "./signup.jpg";
-import { login } from "../../Api/UserApi";
+import { loginUser } from "../../Api/UserApi";
+import  { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/userSlice";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -53,22 +56,38 @@ const Login = () => {
     return isValid;
   };
 
+  // Import jwt-decode to decode the token
+
+  const dispatch = useDispatch();
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (validate()) {
+
+    if (validate(formData, setErrors)) {
       setIsLoading(true);
       try {
-        const response = await login(formData);
-        toast.success("Email verified successfully! Redirecting to home...");
+        const response = await loginUser(formData);
+        const token = response.data.token;
+        const decodedToken = jwtDecode(token);
+        const { firstName, lastName, email } = decodedToken;
+
+        const userData = { token, user: { firstName, lastName, email } };
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(userData));
+
+        dispatch(setUser(userData));
+
+        toast.success("Login successful! Redirecting to home...");
         setTimeout(() => navigate(from, { replace: true }), 2000);
+
         setFormData({ email: "", password: "" });
         setErrors({ email: "", password: "" });
       } catch (error) {
+        console.error(error);
         const errorMessage =
           error.response?.data?.error ||
           "An error occurred during log in. Please try again later.";
         toast.error(errorMessage);
-        setIsLoading(false);
       } finally {
         setIsLoading(false);
       }
@@ -103,7 +122,7 @@ const Login = () => {
         <Container className="signup-container bg-transparent">
           <Row>
             <Col md={12} className="right-container mt-2">
-              <button className="button-back" onClick={handleBackClick}>
+              <button className="button-back text-white" onClick={handleBackClick}>
                 <FaArrowLeft size={18} />
               </button>
               <div className="flex justify-center">

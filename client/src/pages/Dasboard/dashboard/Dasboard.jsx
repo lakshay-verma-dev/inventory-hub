@@ -139,7 +139,7 @@ const Dashboard = () => {
         <Col md={3}>
           <Card className="text-white bg-primary mb-3">
             <Card.Body>
-              <Card.Title>
+              <Card.Title className="text-white">
                 <FaUsers /> Customers
               </Card.Title>
               <Card.Text>
@@ -154,7 +154,7 @@ const Dashboard = () => {
         <Col md={3}>
           <Card className="text-white bg-success mb-3">
             <Card.Body>
-              <Card.Title>
+              <Card.Title className="text-white">
                 <FaDollarSign /> Revenue
               </Card.Title>
               <Card.Text>
@@ -169,7 +169,7 @@ const Dashboard = () => {
         <Col md={3}>
           <Card className="text-white bg-warning mb-3">
             <Card.Body>
-              <Card.Title>
+              <Card.Title className="text-white">
                 <FaDollarSign /> Profit
               </Card.Title>
               <Card.Text>
@@ -184,7 +184,7 @@ const Dashboard = () => {
         <Col md={3}>
           <Card className="text-white bg-info mb-3">
             <Card.Body>
-              <Card.Title>
+              <Card.Title className="text-white">
                 <FaFileInvoice /> Invoices
               </Card.Title>
               <Card.Text>

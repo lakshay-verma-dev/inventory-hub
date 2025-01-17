@@ -11,6 +11,7 @@ FaInstagram,FaLinkedin,FaTwitter} from "react-icons/fa";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import './About.css'; // Custom CSS file
+import profile from "./profile.jpg"
 
 const About = () => {
   useEffect(() => {
@@ -103,7 +104,7 @@ const About = () => {
             <Row>
               <Col md={4}>
                 <Card className="team-member">
-                  <Card.Img variant="top" src="team-member1.jpg" />
+                  <Card.Img variant="top" src={profile} />
                   <Card.Body>
                     <Card.Title>John Doe</Card.Title>
                     <Card.Text>Founder & CEO</Card.Text>
@@ -112,7 +113,7 @@ const About = () => {
               </Col>
               <Col md={4}>
                 <Card className="team-member">
-                  <Card.Img variant="top" src="team-member2.jpg" />
+                  <Card.Img variant="top" src={profile} />
                   <Card.Body>
                     <Card.Title>Jane Smith</Card.Title>
                     <Card.Text>Manager</Card.Text>
@@ -121,7 +122,7 @@ const About = () => {
               </Col>
               <Col md={4}>
                 <Card className="team-member">
-                  <Card.Img variant="top" src="team-member3.jpg" />
+                  <Card.Img variant="top" src={profile} />
                   <Card.Body>
                     <Card.Title>Emily Johnson</Card.Title>
                     <Card.Text>Book Curator</Card.Text>
@@ -300,7 +301,6 @@ const About = () => {
             transition={{ duration: 0.8 }}
             className="about-contact"
           >
-           
             <Row className="text-center mb-5">
               <Col>
                 <motion.h1

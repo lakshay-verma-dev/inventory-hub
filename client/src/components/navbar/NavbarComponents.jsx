@@ -12,30 +12,46 @@ import { MdDashboard, MdRecommend } from "react-icons/md";
 import { FaBagShopping } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { Link, NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCartCount } from "../../store/cartSlice";
+import { clearUser } from "../../store/userSlice"; // Ensure you have a clearUser action in your userSlice
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import profile from "./profile.jpg";
 import "./Navbarstyle.css";
 
 const NavbarComponents = () => {
+  const dispatch = useDispatch();
   const cartCount = useSelector(selectCartCount);
- 
+  const { user } = useSelector((state) => state.user);
+
+  const userdata = user?.email ? 1 : 0;
+
+  const logOut = () => {
+    dispatch(clearUser());
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    // console.log("ldsfj");
+    
+  };
+
   const handleLogout = () => {
     toast.success("You have successfully logged out!", {
       position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
+      autoClose: 1000,
+      hideProgressBar: true,
       closeOnClick: true,
-      pauseOnHover: true,
+      pauseOnHover: false,
       draggable: true,
       progress: undefined,
     });
-    logOut()
-  }
+    logOut();
+  };
 
   return (
     <Navbar
       expand="lg"
-      className="shadow-sm colorful-navbar fixed-top px-8 m-0 pt-3"
+      className="shadow-sm colorful-navbar fixed-top m-0 pt-3 px-4"
     >
       <Container fluid>
         <Navbar.Brand className="text-white ">
@@ -99,7 +115,11 @@ const NavbarComponents = () => {
                 Dashboard
               </Nav.Link>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+            <motion.div
+              className="mt-2"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <Nav.Link
                 as={NavLink}
                 to="/cart"
@@ -112,36 +132,42 @@ const NavbarComponents = () => {
                 </Badge>
               </Nav.Link>
             </motion.div>
-            <Nav.Link
-              as={NavLink}
-              to="/login"
-              activeclassname="active"
-              className="text-white"
-            >
-              <Button variant="outline-light" className="signup-btn">
-                Login
-              </Button>
-              <span className="ms-2"></span>
-            </Nav.Link>
+            <motion.div className="mt-2">
+              <Nav.Link
+                as={NavLink}
+                to="/login"
+                activeclassname="active"
+                className="text-white"
+              >
+                <Button variant="outline-light" className="signup-btn">
+                  <b>Login</b>
+                </Button>
+              </Nav.Link>
+            </motion.div>
 
-            {/* <motion.div>
+            <motion.div>
               <Dropdown className="mt-3">
-                <Dropdown.Toggle
-                  variant="outline-light"
-                  className="d-flex align-items-center hover:bg-transparent text-white"
-                >
+                <Dropdown.Toggle className="d-flex align-items-center bg-transparent border-white text-white">
                   <FaUser className="me-2 text-white" />
-                  {user?.displayName}
+                  {userdata === 1 ? (
+                    <>
+                      {user?.firstName?.charAt(0).toUpperCase() +
+                        user?.firstName?.slice(1).toLowerCase()}{" "}
+                      {user?.lastName?.charAt(0).toUpperCase() +
+                        user?.lastName?.slice(1).toLowerCase()}
+                    </>
+                  ) : (
+                    " "
+                  )}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="end" className="dropdown-menu-end">
-                  {user ? (
+                  {userdata === 1 ? (
                     <>
                       <Dropdown.Item as="div" className=" align-items-center">
                         <div className="text-center">
-                          {" "}
                           <img
-                            src={user?.photoURL}
+                            src={profile}
                             alt="Profile"
                             className="rounded-circle me-2"
                             width="30"
@@ -149,30 +175,47 @@ const NavbarComponents = () => {
                           />
                         </div>
                         <div>
-                          <strong>{user?.displayName}</strong>
+                          <strong>
+                            {user?.firstName?.charAt(0).toUpperCase() +
+                              user?.firstName?.slice(1).toLowerCase()}{" "}
+                            {user?.lastName?.charAt(0).toUpperCase() +
+                              user?.lastName?.slice(1).toLowerCase()}
+                          </strong>
                           <br />
                           <small className="text-muted">{user.email}</small>
                         </div>
                       </Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item as={NavLink} to="/manage-account">
-                        Manage Account
-                      </Dropdown.Item>
-                      <Dropdown.Item>
-                        <p>
-                          {" "}
-                          <Button onClick={handleLogout}>Logout</Button>
-                        </p>
-                      </Dropdown.Item>
+                      <Dropdown.Item>Manage Account</Dropdown.Item>
+                      {/* <Dropdown.Item> */}
+                      <button
+                        className="logout-btn py-1 px-4"
+                        type="button"
+                        onClick={handleLogout}
+                      >
+                        <small>Logout</small>
+                      </button>
+                      {/* </Dropdown.Item> */}
                     </>
                   ) : (
                     <Dropdown.Item disabled>No account</Dropdown.Item>
                   )}
                 </Dropdown.Menu>
               </Dropdown>
-            </motion.div> */}
+            </motion.div>
           </Nav>
         </Navbar.Collapse>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </Container>
     </Navbar>
   );

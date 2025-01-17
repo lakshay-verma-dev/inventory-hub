@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +11,7 @@ import signup from "./signup.jpg";
 import "./SignUp.css";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/userSlice";
-
+import { jwtDecode } from "jwt-decode";
 const SignUp = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -110,29 +110,23 @@ const SignUp = () => {
     setRecaptchaToken(token);
   };
 
-  const dispatch = useDispatch()
-  const handleVerifyEmail = async () => {
+  const dispatch = useDispatch();
+  // Import for decoding JWT
+
+ const handleVerifyEmail = async () => {
     if (!otp) {
       setOTPError("OTP is required.");
       toast.error("Please enter the OTP");
       return;
     }
+
     setIsLoading(true);
     try {
-      const response = await verifyOtp({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        password: formData.password,
-        otp,
-      });
+      const response = await verifyOtp({ ...formData, otp });
+      const token = response.data.token;
 
-      // Log the response data
-      console.log("token", response.data.token);
-
-      // Prepare user data
       const userData = {
-        token: response.data.token,
+        token,
         user: {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -140,14 +134,14 @@ const SignUp = () => {
         },
       };
 
-      // Store data in localStorage
       localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", token);
 
-      // Dispatch the setUser action to store the data in Redux
       dispatch(setUser(userData));
 
       toast.success("Email verified successfully! Redirecting to home...");
       setTimeout(() => navigate("/"), 3000);
+
       setFormData({
         firstName: "",
         lastName: "",
@@ -161,11 +155,11 @@ const SignUp = () => {
         "Failed to verify the OTP. Please try again.";
       toast.error(errorMessage);
       setOTPError(errorMessage);
+      console.error("Error during OTP verification:", error);
     } finally {
       setIsLoading(false);
     }
-  };
-
+ };
   const handleBackToSignUp = () => {
     setVerificationSent(false);
   };
@@ -364,11 +358,17 @@ const SignUp = () => {
                 <div className="text-left">
                   <Button
                     variant="link"
-                    className="text-decoration-none d-flex text-orange-800"
+                    className="text-decoration-none d-flex text-white mt-1"
+                    style={{ color: "#f5da72" }}
                     onClick={handleBackToSignUp}
                   >
-                    <FaArrowLeft className="mt-1 mr-1" />
-                    Back to Sign Up
+                    <span
+                      style={{ color: "#f5da72" }}
+                      className="hover:underline d-flex"
+                    >
+                      <FaArrowLeft className="mt-1 mr-1" />
+                      Back to Sign Up
+                    </span>
                   </Button>
                 </div>
               </div>

@@ -110,22 +110,22 @@ const FooterComponents = () => {
               &copy; 2024 BookInventory. All rights reserved.
             </p>
             <div className="social-icons">
-              <a href="https://facebook.com" aria-label="Facebook">
+              <a href="https://facebook.com" aria-label="Facebook" className="text-white">
                 <FaFacebookF />
               </a>
-              <a href="https://twitter.com" aria-label="Twitter">
+              <a href="https://twitter.com" aria-label="Twitter" className="text-white">
                 <FaTwitter />
               </a>
               <a
-                href="https://www.instagram.com/lakshay_.verma_/"
+                href="https://www.instagram.com/"
                 aria-label="Instagram"
-              >
+               className="text-white">
                 <FaInstagram />
               </a>
               <a
-                href="https://www.linkedin.com/in/lakshay-verma-b70b42301/"
+                href="https://www.linkedin.com/"
                 aria-label="LinkedIn"
-              >
+               className="text-white">
                 <FaLinkedinIn />
               </a>
             </div>
