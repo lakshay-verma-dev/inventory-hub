@@ -7,8 +7,14 @@ const uploadBook = async (newbookdata) => {
 };
 
 const getBook = async () => {
-  return axios.get(`${BOOK_API}/all-books`);
+ 
+  return axios.get(`${BOOK_API}/all-books`); 
 };
+const getUserBook = async (userData) => {
+  
+  return axios.post(`${BOOK_API}/get-user-book`, { userData });
+};
+
 
 const deleteBook = async (id) => {
   return axios.delete(`${BOOK_API}/delete-book/${id}`);
@@ -22,4 +28,11 @@ const updatedBook = async (id, updateData) => {
   return axios.patch(`${BOOK_API}/update-book/${id}`, updateData);
 };
 
-export { uploadBook, getBook, deleteBook, getsingleBook, updatedBook };
+export {
+  uploadBook,
+  getBook,
+  deleteBook,
+  getsingleBook,
+  updatedBook,
+  getUserBook,
+};

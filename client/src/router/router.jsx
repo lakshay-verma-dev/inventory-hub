@@ -24,6 +24,9 @@ import ArticleDetail5HindiNovels from "../pages/recommendations/ArticleDetail5Hi
 import ForgotPassword from "../components/login/ForgotPassword";
 import Success from "../components/Success";
 import Cancel from "../components/Cancel";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
+import UpgradeToPro from "../pages/Dasboard/upgradeToPro/UpgradeToPro";
+import Documentation from "../pages/Dasboard/documentation/Documentation";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +112,14 @@ const router = createBrowserRouter([
         path: "admin/logout",
         element: <Logout />,
       },
+      {
+        path: "admin/upgrade",
+        element: <UpgradeToPro />,
+      },
+      {
+        path: "admin/documentation",
+        element: <Documentation />,
+      },
     ],
   },
   {
@@ -131,6 +142,10 @@ const router = createBrowserRouter([
     path: "/cancel",
     element: <Cancel />,
   },
+  {
+    path: "*",
+    element:<NotFoundPage/>
+  }
 ]);
 
 export default router;

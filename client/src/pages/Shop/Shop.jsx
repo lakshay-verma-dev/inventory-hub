@@ -11,11 +11,11 @@ import {
 import { motion } from "framer-motion";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
 import { getBook } from "../../Api/BookApi";
 import { loadStripe } from "@stripe/stripe-js";
-import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer here
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./ShopCard.css";
 import { paymentSession } from "../../Api/PaymentApi";
@@ -39,14 +39,16 @@ const categories = [
 const Shop = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [paymentLoading, setPaymentLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All Books");
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchBooks = async () => {
       try {
-        const response = await getBook(); // Replace with your API endpoint
+        const response = await getBook();
         setBooks(response.data);
       } catch (error) {
         console.error("There was an error fetching the books!", error);
@@ -72,13 +74,14 @@ const Shop = () => {
   };
 
   const makePayment = async (item) => {
-    // if (!user) {
-    //   toast.error("No user logged in. Please log in to purchase the product.", {
-    //     // position: toast.POSITION.TOP_CENTER,
-    //   });
-    //   return;
-    // }
-    console.log(import.meta.env.VITE_PUBLISHABLE_KEY);
+    if (!user || !user.email) {
+      toast.error("You are not logged in. Please log in to buy a product.", {
+        // position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+
+    setPaymentLoading(true);
 
     const stripe = await loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY);
     try {
@@ -97,11 +100,14 @@ const Shop = () => {
       const result = await stripe.redirectToCheckout({ sessionId });
 
       if (result.error) {
-        console.error("sdjf", result.error.message);
+        console.error("Payment error:", result.error.message);
+        toast.error("Error in payment process");
       }
     } catch (error) {
       console.error("Error in payment process:", error);
       toast.error("Error in payment process");
+    } finally {
+      setPaymentLoading(false);
     }
   };
 
@@ -116,101 +122,112 @@ const Shop = () => {
   }
 
   return (
-    <Container fluid className="px-10 mt-28">
-      <ToastContainer /> {/* Add ToastContainer here */}
-      <Row className="category-dropdown-container">
-        <Col className="d-flex justify-content-center">
-          <Form.Select
-            className="form-select"
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-            aria-label="Select Category"
-          >
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </Form.Select>
-        </Col>
-      </Row>
-      <Row>
-        <motion.div
-          initial={{ x: "-100vw" }}
-          animate={{ x: 0 }}
-          transition={{ type: "spring", stiffness: 120 }}
-          className="banner-heading"
-        >
-          <h2 className="text-5xl text-left font-bold text-black pt-8 ">
-            {selectedCategory === "All Books"
-              ? "All Books"
-              : `${selectedCategory} Books`}
-          </h2>
-        </motion.div>
-      </Row>
-      <Row className="flex justify-around">
-        {filteredBooks.length > 0 ? (
-          filteredBooks.map((item) => (
-            <Col
-              key={item.id}
-              md={4}
-              sm={6}
-              xs={12}
-              className="mb-4"
-              style={{ width: "24rem" }}
+    <>
+      {paymentLoading && (
+        <div className="payment-overlay">
+          <Spinner animation="border" variant="light" className="text-black" />
+          <h4 className="text-black mt-3">
+            Processing payment, please wait...
+          </h4>
+        </div>
+      )}
+      <Container
+        fluid
+        className={`px-10 mt-28 ${paymentLoading ? "blurred" : ""}`}
+      >
+        <ToastContainer />
+        <Row className="category-dropdown-container">
+          <Col className="d-flex justify-content-center">
+            <Form.Select
+              className="form-select"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              aria-label="Select Category"
             >
-              <motion.div
-                className="position-relative cart-shop-card"
-                // whileHover={{ scale: 1.05 }}
-                // transition={{ duration: 0.3 }}
-              >
-                <Card className="h-100">
-                  <div className="shopping-icon">
-                    <Button
-                      onClick={() => handleAddToCart(item)}
-                      variant="light"
-                    >
-                      <FaShoppingCart />
-                    </Button>
-                  </div>
-                  <Link to={`/book/${item.id}`}>
-                    <Card.Img
-                      variant="top"
-                      className="h-96"
-                      src={item.imageURL}
-                    />
-                  </Link>
-                  <Card.Body className="text-black">
-                    <Card.Title className="text-black mb-1">
-                      {item.title}
-                    </Card.Title>
-                    <Card.Text className="m-0 p-0">
-                      <small className="text-muted">
-                        by <b>{item.author}</b>
-                      </small>
-                    </Card.Text>
-                    <Card.Text className="text-primary">
-                      ${item.price}
-                    </Card.Text>
-                    <Button
-                      className="explore-more-button w-full"
-                      variant="primary"
-                      onClick={() => makePayment(item)}
-                    >
-                      Buy Now
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </motion.div>
-            </Col>
-          ))
-        ) : (
-          <Col className="text-center my-4">
-            <h4>No books available for the selected category.</h4>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </Form.Select>
           </Col>
-        )}
-      </Row>
-    </Container>
+        </Row>
+        <Row>
+          <motion.div
+            initial={{ x: "-100vw" }}
+            animate={{ x: 0 }}
+            transition={{ type: "spring", stiffness: 120 }}
+            className="banner-heading"
+          >
+            <h2 className="text-5xl text-left font-bold text-black pt-8 ">
+              {selectedCategory === "All Books"
+                ? "All Books"
+                : `${selectedCategory} Books`}
+            </h2>
+          </motion.div>
+        </Row>
+        <Row className="flex justify-around">
+          {filteredBooks.length > 0 ? (
+            filteredBooks.map((item) => (
+              <Col
+                key={item.id}
+                md={4}
+                sm={6}
+                xs={12}
+                className="mb-4"
+                style={{ width: "24rem" }}
+              >
+                <motion.div className="position-relative cart-shop-card">
+                  <Card className="h-100">
+                    <div className="shopping-icon">
+                      <Button
+                        onClick={() => handleAddToCart(item)}
+                        variant="light"
+                      >
+                        <FaShoppingCart />
+                      </Button>
+                    </div>
+                    <Link to={`/book/${item.id}`}>
+                      <Card.Img
+                        variant="top"
+                        className="h-96"
+                        src={item.imageURL}
+                      />
+                    </Link>
+                    <Card.Body className="text-black">
+                      <Card.Title className="text-black mb-1">
+                        {item.title}
+                      </Card.Title>
+                      <Card.Text className="m-0 p-0">
+                        <small className="text-muted">
+                          <h4>
+                            by <b>{item.author}</b>
+                          </h4>
+                        </small>
+                      </Card.Text>
+                      <Card.Text className="text-primary">
+                        ${item.price}
+                      </Card.Text>
+                      <Button
+                        className="explore-more-button w-full mt-0"
+                        variant="primary"
+                        onClick={() => makePayment(item)}
+                      >
+                        Buy Now
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </motion.div>
+              </Col>
+            ))
+          ) : (
+            <Col className="text-center my-4">
+              <h4>No books available for the selected category.</h4>
+            </Col>
+          )}
+        </Row>
+      </Container>
+    </>
   );
 };
 

@@ -10,9 +10,7 @@
   transition: transform 0.3s ease;
 }
 
-.favbook-image:hover {
-  transform: scale(1.05);
-}
+
 
 .favorite-book-heading {
   font-size: 2.5rem;

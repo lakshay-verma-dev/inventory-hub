@@ -6,7 +6,7 @@ const signupRoute = async (userData) => {
   return axios.post(`${USER_API}/register`, userData);
 };
 
-const login = async (userData) => {
+const loginUser = async (userData) => {
   return axios.post(`${USER_API}/login`, userData);
 };
 
@@ -31,7 +31,7 @@ const logout = () => {
 
 export {
   signupRoute,
-  login,
+  loginUser,
   verifyOtp,
   forgotPassword,
   resetPassword,

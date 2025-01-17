@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import {
   FaTachometerAlt,
@@ -15,33 +15,34 @@ import {
 import { NavLink } from "react-router-dom"; // Use NavLink for active styling
 import "./SideBar.css"; // Custom CSS file
 import profile from "./profile.jpg";
+import { useSelector } from "react-redux";
 
 const SideBar = () => {
-  // const { user } = useFirebase();
+  const { user } = useSelector((state) => state.user);
+  // console.log("efwiw",user)
   return (
     <Navbar
       bg="dark"
       expand="lg"
-      className="flex-column sidebar fixed p-3 rounded"
+      className="flex-column sidebar fixed px-3 py-3"
     >
       <Container fluid>
         <Nav className="flex-column">
           <Navbar.Brand href="#home" className="mb-2 flex h-full gap-3 w-6">
-            {/* {user?.photoURL ? (
-              <img
-                src={user?.photoURL}
-                width={"40px"}
-                height={"40px"}
-                alt="Logo"
-                className="rounded"
-              />
-            ) : (
-              ""
-            )}
+            <img
+              src={profile}
+              width={"40px"}
+              height={"40px"}
+              alt="Logo"
+              className="rounded"
+            />
 
-            <h4 className="text-white" style={{ fontSize: "18px" }}>
-              {user?.displayName ? user?.displayName : <p style={{fontSize:"14px"}}>{user?.email}</p>}
-            </h4> */}
+            <h4 className="text-white mt-1" style={{ fontSize: "18px" }}>
+              {user?.firstName?.charAt(0).toUpperCase() +
+                user?.firstName?.slice(1).toLowerCase()}{" "}
+              {user?.lastName?.charAt(0).toUpperCase() +
+                user?.lastName?.slice(1).toLowerCase()}
+            </h4>
           </Navbar.Brand>
           <NavLink
             to="/admin"
@@ -65,13 +66,7 @@ const SideBar = () => {
             <FaBookOpen className="me-2" />
             <span>Manage Book</span>
           </NavLink>
-          <NavLink
-            to="/users"
-            className="sidebar-link"
-            activeclassname="active"
-          >
-            <FaUsers className="me-2" /> <span>Users</span>
-          </NavLink>
+         
           <NavLink
             to="/products"
             className="sidebar-link"
@@ -95,14 +90,14 @@ const SideBar = () => {
           </NavLink>
           <hr className="my-3 text-white"></hr>
           <NavLink
-            to="/upgrade  "
+            to="admin/upgrade"
             className="sidebar-link"
             activeclassname="active"
           >
             <FaArrowUp className="me-2" /> <span>Upgrade to Pro</span>
           </NavLink>
           <NavLink
-            to="/documentation"
+            to="admin/documentation"
             className="sidebar-link"
             activeclassname="active"
           >

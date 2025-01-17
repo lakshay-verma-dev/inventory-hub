@@ -12,8 +12,10 @@ import {
 } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 import { uploadBook } from "../../../Api/BookApi"; // Assuming this is the correct import for the upload function
+import { useSelector } from "react-redux";
 
 const UploadBook = () => {
+  const { user } = useSelector((state) => state.user);
   const [bookData, setBookData] = useState({
     title: "",
     author: "",
@@ -102,6 +104,7 @@ const UploadBook = () => {
         formData.append("category", bookData.category);
         formData.append("description", bookData.description);
         formData.append("price", bookData.price);
+        formData.append("user", user.email)
 
         const response = await uploadBook(formData); 
         toast.success(response.data.message);

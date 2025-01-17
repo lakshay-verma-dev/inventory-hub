@@ -42,9 +42,6 @@
   transition: transform 0.3s ease;
 }
 
-.promo-image:hover {
-  transform: scale(1.05);
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {

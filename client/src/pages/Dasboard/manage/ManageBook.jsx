@@ -13,20 +13,24 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { deleteBook, getBook } from "../../../Api/BookApi";
-import "./ManageBook.css"
+import { deleteBook, getBook, getUserBook } from "../../../Api/BookApi";
+import "./ManageBook.css";
+import { useSelector } from "react-redux";
 
 const ManageBook = () => {
+  const { user } = useSelector((state) => state.user);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
+  const [userData, setUserData] = useState(user.email);
 
   useEffect(() => {
+    setUserData(user.email); 
     window.scrollTo(0, 0);
     const fetchBooks = async () => {
       try {
-        const response = await getBook();
+        const response = await getUserBook(user.email); 
         setBooks(response.data);
       } catch (error) {
         console.error("There was an error fetching the books!", error);
@@ -35,7 +39,7 @@ const ManageBook = () => {
       }
     };
     fetchBooks();
-  }, []);
+  }, [user, userData]); // Dependencies
 
   const confirmDelete = (id) => {
     setBookToDelete(id);
@@ -109,45 +113,47 @@ const ManageBook = () => {
           <Row className="g-4">
             {books.map((book, index) => (
               <Col md={4} lg={3} key={index} className="mb-4">
-                  <Card className="h-100 manage-card">
-                    <Card.Img
-                      variant="top"
-                      src={book.imageURL || "https://via.placeholder.com/150"}
-                      alt={book.title}
-                      style={{ height: "200px", objectFit: "cover" }}
-                    />
-                    <Card.Body>
-                      <Card.Title>{truncateText(book.title, 25)}</Card.Title>
-                      <Card.Text>
-                        <strong>Author:</strong> {truncateText(book.author, 20)}
-                      </Card.Text>
-                      <Card.Text>
-                        <strong>Price:</strong> ${book.price}
-                      </Card.Text>
-                    </Card.Body>
-                    <Card.Footer className="d-flex justify-content-between">
-                      <Button
-                        variant="outline-primary"
-                        className="flex-grow-1 me-2 book-action-btn"
+                <Card className="h-100 manage-card">
+                  <Card.Img
+                    variant="top"
+                    src={book.imageURL || "https://via.placeholder.com/150"}
+                    alt={book.title}
+                    style={{ height: "200px", objectFit: "cover" }}
+                  />
+                  <Card.Body>
+                    <Card.Title className="text-left">
+                      {truncateText(book.title, 25)}
+                    </Card.Title>
+                    <Card.Text>
+                      <strong>Author:</strong> {truncateText(book.author, 20)}
+                    </Card.Text>
+                    <Card.Text>
+                      <strong>Price:</strong> ${book.price}
+                    </Card.Text>
+                  </Card.Body>
+                  <Card.Footer className="d-flex justify-content-between">
+                    <Button
+                      variant="outline-primary"
+                      className="flex-grow-1 me-2 book-action-btn"
+                    >
+                      <Link
+                        to={`/admin/manage/edit-book/${book.id}`}
+                        className="text-decoration-none d-flex align-items-center gap-2 hover:text-white"
                       >
-                        <Link
-                          to={`/admin/manage/edit-book/${book.id}`}
-                          className="text-decoration-none d-flex align-items-center gap-2 hover:text-white"
-                        >
-                          <AiFillEdit />
-                          Edit
-                        </Link>
-                      </Button>
-                      <Button
-                        variant="outline-danger"
-                        onClick={() => confirmDelete(book.id)}
-                        className="flex-grow-1 book-action-btn d-flex align-items-center gap-2"
-                      >
-                        <AiFillDelete />
-                        Delete
-                      </Button>
-                    </Card.Footer>
-                  </Card>
+                        <AiFillEdit />
+                        Edit
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => confirmDelete(book.id)}
+                      className="flex-grow-1 book-action-btn d-flex align-items-center gap-2"
+                    >
+                      <AiFillDelete />
+                      Delete
+                    </Button>
+                  </Card.Footer>
+                </Card>
               </Col>
             ))}
           </Row>

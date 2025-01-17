@@ -59,6 +59,10 @@
 .team-member {
   transition: transform 0.3s, box-shadow 0.3s;
 }
+.team-member img{
+  height: 40px;
+  width: 40px;
+}
 
 .team-member:hover {
   transform: scale(1.05);
