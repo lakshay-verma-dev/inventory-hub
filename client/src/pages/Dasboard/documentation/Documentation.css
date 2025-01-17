@@ -1,0 +1,91 @@
+.documentation-container {
+  background-color: #f9f9f9;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+
+.card-title {
+  font-size: 1.5rem;
+}
+
+.card-text ul {
+  padding-left: 1.5rem;
+}
+
+.card-text li {
+  margin-bottom: 1rem;
+}
+
+.list-unstyled {
+  padding-left: 0;
+}
+
+.accordion-button {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.accordion-body {
+  font-size: 1rem;
+  padding: 1.25rem;
+  background-color: #f9f9f9;
+}
+
+.accordion-item {
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.accordion-header {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.accordion-button:hover {
+  background-color: #e7e7e7;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.card-title {
+  /* text-align: center; */
+  margin-bottom: 1.5rem;
+}
+
+.card-text ul {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.card-text li {
+  margin-bottom: 0.75rem;
+}
+
+.card-text li .text-success {
+  color: #28a745;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+button:hover {
+  color: #0056b3;
+}
