@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { FaArrowLeft, FaShoppingCart, FaStar } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getsingleBook } from "../../Api/BookApi";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./SingleBook.css"; // Custom CSS
 import { paymentSession } from "../../Api/PaymentApi";
+import { addToCart } from "../../store/cartSlice";
 
 const SingleBook = () => {
   const { id } = useParams();
@@ -36,9 +37,10 @@ const SingleBook = () => {
 
   const makePayment = async (item) => {
     if (!user || !user.email) {
-      toast.error("You are not logged in. Please log in to buy the product.", {
-      
-      });
+      toast.error(
+        "You are not logged in. Please log in to buy the product.",
+        {}
+      );
       return;
     }
 
@@ -71,7 +73,10 @@ const SingleBook = () => {
       setPaymentLoading(false);
     }
   };
-
+  const dispatch = useDispatch();
+  const handleAddToCart = (item) => {
+    dispatch(addToCart(item));
+  };
   const handleBackClick = () => {
     navigate(-1); // Go back to the previous page
   };
@@ -104,7 +109,7 @@ const SingleBook = () => {
       >
         <ToastContainer />
         <Row className="px-5 py-5">
-          <button className="button-back" onClick={handleBackClick}>
+          <button className="button-back text-black" onClick={handleBackClick}>
             <FaArrowLeft size={24} /> Back
           </button>
           <Col md={4} sm={12} xs={12} className="image-col m-0 p-0">
@@ -129,8 +134,9 @@ const SingleBook = () => {
               ))}
               <span className="rating-text">4.5/5</span>
             </div>
+            <h2 className="text-left mb-1">Description:</h2>
+            <pre className="description">{book.description}</pre>
 
-            <p className="description h-auto">{book.description}</p>
             <h3 className="mb-2">
               Genre{" "}
               <b className="border-b-2 border-cyan-500">{book.category}</b>
@@ -139,7 +145,7 @@ const SingleBook = () => {
             <Button
               variant="primary"
               className="cart-button me-2"
-              onClick={() => console.log("Add to cart function")}
+              onClick={() => handleAddToCart(book)}
             >
               <FaShoppingCart /> Add to Cart
             </Button>

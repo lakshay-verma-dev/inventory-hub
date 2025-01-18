@@ -36,6 +36,11 @@ const categories = [
   "Self-help",
 ];
 
+// Utility function to truncate text
+const truncateText = (text, limit) => {
+  return text.length > limit ? `${text.slice(0, limit)}...` : text;
+};
+
 const Shop = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -75,9 +80,7 @@ const Shop = () => {
 
   const makePayment = async (item) => {
     if (!user || !user.email) {
-      toast.error("You are not logged in. Please log in to buy a product.", {
-        // position: toast.POSITION.TOP_CENTER,
-      });
+      toast.error("You are not logged in. Please log in to buy a product.");
       return;
     }
 
@@ -166,7 +169,7 @@ const Shop = () => {
             </h2>
           </motion.div>
         </Row>
-        <Row className="flex justify-around">
+        <Row className="flex justify-around shop-card-container">
           {filteredBooks.length > 0 ? (
             filteredBooks.map((item) => (
               <Col
@@ -175,7 +178,7 @@ const Shop = () => {
                 sm={6}
                 xs={12}
                 className="mb-4"
-                style={{ width: "24rem" }}
+                style={{ width: "24.5rem" }}
               >
                 <motion.div className="position-relative cart-shop-card">
                   <Card className="h-100">
@@ -196,25 +199,24 @@ const Shop = () => {
                     </Link>
                     <Card.Body className="text-black">
                       <Card.Title className="text-black mb-1">
-                        {item.title}
+                        {truncateText(item.title, 20)}
                       </Card.Title>
-                      <Card.Text className="m-0 p-0">
-                        <small className="text-muted">
-                          <h4>
-                            by <b>{item.author}</b>
-                          </h4>
-                        </small>
+                      <Card.Text className="text-muted mb-2">
+                        By <b>{truncateText(item.author, 15)}</b>
                       </Card.Text>
-                      <Card.Text className="text-primary">
-                        ${item.price}
+                      <Card.Text className="mb-1">
+                        {truncateText(item.description, 60)}
                       </Card.Text>
-                      <Button
-                        className="explore-more-button w-full mt-0"
-                        variant="primary"
-                        onClick={() => makePayment(item)}
-                      >
-                        Buy Now
-                      </Button>
+                      <div className="d-flex justify-content-between align-items-center mb-0">
+                        <span className="text-primary">${item.price}</span>
+                        <Button
+                          className="explore-more-button"
+                          variant="primary"
+                          onClick={() => makePayment(item)}
+                        >
+                          Buy Now
+                        </Button>
+                      </div>
                     </Card.Body>
                   </Card>
                 </motion.div>

@@ -75,7 +75,7 @@ const UpgradeToPro = () => {
       <Row className="justify-content-center">
         <Col md={5} className="mb-4">
           <motion.div
-            whileHover={{ scale: 1.05 }}
+            // whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
             <Card className="shadow-sm border-primary">
@@ -121,7 +121,7 @@ const UpgradeToPro = () => {
 
         <Col md={5} className="mb-4">
           <motion.div
-            whileHover={{ scale: 1.05 }}
+            // whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
             <Card className="shadow-lg border-success">

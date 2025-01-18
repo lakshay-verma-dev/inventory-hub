@@ -145,7 +145,7 @@ const router = createBrowserRouter([
   {
     path: "*",
     element:<NotFoundPage/>
-  }
+  },
 ]);
 
 export default router;

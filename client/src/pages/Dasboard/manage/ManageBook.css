@@ -45,3 +45,6 @@
   border: 1px solid rgba(126, 125, 125, 0.44);
   box-shadow: 1px 1px 8px rgb(81, 80, 80);
 }
+.card-title{
+  margin-bottom: 2px;
+}

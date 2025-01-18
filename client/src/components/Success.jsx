@@ -28,7 +28,7 @@ const Success = () => {
               Your order has been placed successfully. Thank you for shopping
               with us!
             </p>
-            <Button as={Link} to="/shop" variant="primary" className="mt-4">
+            <Button as={Link} to="/" variant="primary" className="mt-4">
               Continue Shopping
             </Button>
           </Col>

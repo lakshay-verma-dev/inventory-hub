@@ -120,14 +120,14 @@ const ManageBook = () => {
                     alt={book.title}
                     style={{ height: "200px", objectFit: "cover" }}
                   />
-                  <Card.Body>
-                    <Card.Title className="text-left">
-                      {truncateText(book.title, 25)}
+                  <Card.Body className="px-3 py-3">
+                    <Card.Title className="text-left mb-2">
+                      {truncateText(book.title, 15)}
                     </Card.Title>
-                    <Card.Text>
-                      <strong>Author:</strong> {truncateText(book.author, 20)}
+                    <Card.Text className="mb-0">
+                      <strong>Author:</strong> {truncateText(book.author, 15)}
                     </Card.Text>
-                    <Card.Text>
+                    <Card.Text className="mb-0">
                       <strong>Price:</strong> ${book.price}
                     </Card.Text>
                   </Card.Body>

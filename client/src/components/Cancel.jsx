@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cancel = () => {
   return (
@@ -29,9 +29,9 @@ const Cancel = () => {
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <Link to="/shop">
+              <Link to="/">
                 <Button variant="warning" className="mt-3">
-                  Return to Shop
+                  Return to Home
                 </Button>
               </Link>
             </motion.div>

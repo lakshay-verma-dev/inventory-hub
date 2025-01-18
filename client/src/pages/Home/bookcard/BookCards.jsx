@@ -10,6 +10,12 @@ import "swiper/css/navigation";
 import "./BookCard.css";
 
 const BookCards = ({ books, headline }) => {
+   const truncateText = (text, maxLength) => {
+     if (text.length > maxLength) {
+       return text.slice(0, maxLength) + "...";
+     }
+     return text;
+   };
   return (
     <div className="px-8">
       <h2 className="text-5xl text-center font-bold text-black py-8">
@@ -52,7 +58,7 @@ const BookCards = ({ books, headline }) => {
                   whileTap={{ scale: 0.9 }}
                   className="cart-card"
                 >
-                  <Card className="h-80">
+                  <Card className="h-80 book-card-container">
                     {/* <div className="shopping-icon">
                       <Button
                         onClick={() => handleAddToCart(item)}
@@ -70,13 +76,13 @@ const BookCards = ({ books, headline }) => {
                     </Link>
                     <Card.Body className="text-black">
                       <Card.Title className="text-black mb-1">
-                        {item.title}
+                        {truncateText(item.title, 15)}
                       </Card.Title>
                       <Card.Text className="m-0 p-0">
-                        <h3>
+                        <h4>
                           {" "}
-                          By <b>{item.author}</b>
-                        </h3>
+                          By <b>{truncateText(item.author, 15)}</b>
+                        </h4>
                       </Card.Text>
                       <Card.Text className="text-primary">
                         ${item.price}

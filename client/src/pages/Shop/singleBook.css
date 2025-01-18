@@ -84,3 +84,14 @@
   filter: blur(5px);
   pointer-events: none;
 }
+.description {
+  font-family: 'Arial', sans-serif; /* You can change this to any font family you prefer */
+  white-space: pre-wrap; /* Ensures that the content breaks properly when it's too long */
+  word-wrap: break-word; /* Prevents long words from breaking the layout */
+  line-height: 1.6; /* Adds spacing between lines for better readability */
+  padding: 10px; /* Adds space inside the container */
+  margin: 1 0px 0; /* Adds space outside the container */
+  background-color: #f9f9f9; /* Light background color to make it stand out */
+  border-radius: 8px; /* Adds rounded corners to the element */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow around the element */
+}
