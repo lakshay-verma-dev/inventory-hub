@@ -1,8 +1,9 @@
 import stripe from "stripe";
 import { config } from "dotenv";
-config()
+config();
 
 const stripeInstance = stripe(process.env.STRIPE_KEY); // Replace with your Stripe secret key
+const frontendURL = process.env.FRONTEND_API;
 
 async function paymentSession(req, res) {
   const { products } = req.body;
@@ -18,14 +19,17 @@ async function paymentSession(req, res) {
       throw new Error("Product missing title or price");
     }
 
+    // Ensure the price is rounded and converted to cents (integer)
+    const unitAmountInCents = Math.round(item.price * 100); // Convert price to cents and round to nearest integer
+
     return {
       price_data: {
-        currency: "usd",
+        currency: "usd", // Use the appropriate currency
         product_data: {
           name: item.title,
           images: item.imageUrl ? [item.imageUrl] : [],
         },
-        unit_amount: item.price * 100, // Convert to cents
+        unit_amount: unitAmountInCents, // Ensure unit_amount is an integer
       },
       quantity: item.quantity || 1,
     };
@@ -37,9 +41,8 @@ async function paymentSession(req, res) {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url:
-        "http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "http://localhost:5173/cancel",
+      success_url: `${frontendURL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${frontendURL}/cancel`,
     });
 
     // Respond with session ID
