@@ -36,7 +36,7 @@ function Cart() {
 
   const clearAllItems = () => {
     dispatch(clearCart());
-    toast.success("All items have been removed from the cart.");
+    // toast.success("All items have been removed from the cart.");
   };
 
   const purchaseAllItems = async () => {

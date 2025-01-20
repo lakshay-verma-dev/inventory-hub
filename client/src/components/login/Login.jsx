@@ -210,14 +210,14 @@ const Login = () => {
                       Here{" "}
                     </p>
                   </div>
-                  <Button variant="light" className="google-signin-button mt-2">
+                  {/* <Button variant="light" className="google-signin-button mt-2">
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png"
                       alt="Google logo"
                       className="google-logo mr-2"
                     />
                     Sign in with Google
-                  </Button>
+                  </Button> */}
                 </Form>
               </motion.div>
             </Col>

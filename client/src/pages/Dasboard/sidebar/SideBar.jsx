@@ -28,22 +28,26 @@ const SideBar = () => {
     >
       <Container fluid>
         <Nav className="flex-column">
-          <Navbar.Brand href="#home" className="mb-2 flex h-full gap-3 w-6">
-            <img
-              src={profile}
-              width={"40px"}
-              height={"40px"}
-              alt="Logo"
-              className="rounded"
-            />
+          {user?.firstName && user?.lastName ? (
+            <Navbar.Brand href="#home" className="mb-2 flex h-full gap-3 w-6">
+              <img
+                src={profile}
+                width={"40px"}
+                height={"40px"}
+                alt="Logo"
+                className="rounded"
+              />
 
-            <h4 className="text-white mt-1" style={{ fontSize: "18px" }}>
-              {user?.firstName?.charAt(0).toUpperCase() +
-                user?.firstName?.slice(1).toLowerCase()}{" "}
-              {user?.lastName?.charAt(0).toUpperCase() +
-                user?.lastName?.slice(1).toLowerCase()}
-            </h4>
-          </Navbar.Brand>
+              <h4 className="text-white mt-1" style={{ fontSize: "18px" }}>
+                {user?.firstName?.charAt(0).toUpperCase() +
+                  user?.firstName?.slice(1).toLowerCase()}{" "}
+                {user?.lastName?.charAt(0).toUpperCase() +
+                  user?.lastName?.slice(1).toLowerCase()}
+              </h4>
+            </Navbar.Brand>
+          ) : (
+            ""
+          )}
           <NavLink
             to="/admin"
             className="sidebar-link"
@@ -66,7 +70,7 @@ const SideBar = () => {
             <FaBookOpen className="me-2" />
             <span>Manage Book</span>
           </NavLink>
-         
+
           <NavLink
             to="/products"
             className="sidebar-link"
