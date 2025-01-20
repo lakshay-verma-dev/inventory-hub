@@ -34,8 +34,21 @@ const register = async (req, res) => {
     // Send OTP email
     await sendEmail(
       email,
-      "Your OTP for Verification",
-      `Your OTP is ${otp}. It will expire in 5 minutes.\nBest regards, Book Inventory`
+      "Your One-Time Password (OTP) for Verification",
+      `
+  Dear User,
+
+  Thank you for using Book Inventory!
+
+  Your One-Time Password (OTP) for verification is: ${otp}
+
+  This OTP is valid for the next 5 minutes. Please use it promptly to complete your verification process.
+
+  If you did not request this verification, please ignore this email or contact our support team immediately.
+
+  Best regards,  
+  The Book Inventory Team
+  `
     );
 
     res.status(200).json({ message: "OTP sent to email" });
@@ -130,7 +143,25 @@ const forgotPassword = async (req, res) => {
 
     otpStore.set(email, { otp, otpExpiresAt });
 
-    await sendEmail(email, "Password Reset OTP", `Your OTP is: ${otp}`);
+    await sendEmail(
+      email,
+      "Password Reset OTP",
+      `
+  Dear User,
+
+  We received a request to reset your password for your Book Inventory account.
+
+  Your One-Time Password (OTP) for resetting your password is: **${otp}**
+
+  This OTP is valid for the next 5 minutes. Please use it to reset your password promptly.
+
+  If you did not request a password reset, please ignore this email or contact our support team immediately.
+
+  Best regards,  
+  The Book Inventory Team
+  `
+    );
+
     res.status(200).json({ message: "OTP sent to email" });
   } catch (error) {
     console.error("Error sending OTP:", error);
