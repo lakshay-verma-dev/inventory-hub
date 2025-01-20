@@ -7,7 +7,7 @@ import { getsingleBook } from "../../Api/BookApi";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./SingleBook.css"; // Custom CSS
+import "./singleBook.css"; // Custom CSS
 import { paymentSession } from "../../Api/PaymentApi";
 import { addToCart } from "../../store/cartSlice";
 

@@ -8,9 +8,16 @@ const app = express();
 
 const port = process.env.PORT || 5000;
 const url = process.env.DATABASE_URL;
+const frontendURL = process.env.FRONTEND_API;
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: frontendURL, // Replace with your frontend's URL
+  methods: ["GET", "POST", "PATCH", "DELETE"], // Allowed HTTP methods
+  credentials: true, // Allow credentials like cookies
+};
+
+app.use(cors(corsOptions));
 app.use(json());
 
 // Routes
