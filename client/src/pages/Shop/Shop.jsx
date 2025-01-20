@@ -178,7 +178,7 @@ const Shop = () => {
                 sm={6}
                 xs={12}
                 className="mb-4"
-                style={{ width: "24.5rem" }}
+                style={{ width: "22rem" }}
               >
                 <motion.div className="position-relative cart-shop-card">
                   <Card className="h-100">

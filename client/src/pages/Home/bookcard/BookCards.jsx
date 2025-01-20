@@ -50,7 +50,7 @@ const BookCards = ({ books, headline }) => {
         {books.map((item, index) => (
           <SwiperSlide key={item.id}>
             <Link to={`/book/${item.id}`}>
-              <Col key={index} md={4} sm={6} xs={12} style={{ width: "22rem" }}>
+              <Col key={index} md={4} sm={6} xs={12} style={{ width: "20rem" }}>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
