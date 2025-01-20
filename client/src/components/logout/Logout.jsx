@@ -31,7 +31,7 @@ const Logout = () => {
       localStorage.removeItem("user");
       localStorage.removeItem("token"); // Ensure token is removed if stored separately
       navigate("/"); // Redirect to the login page
-    }, 3100);
+    }, 2000);
   };
 
   return (

@@ -86,15 +86,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <DasboardLayout />,
+
+    element: (
+      <PrivateRoute>
+        <DasboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/admin",
-        element: (
-          <PrivateRoute>
-            <Dasboard />
-          </PrivateRoute>
-        ),
+        element: <Dasboard />,
       },
       {
         path: "/admin/upload",
@@ -144,7 +145,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element:<NotFoundPage/>
+    element: <NotFoundPage />,
   },
 ]);
 
