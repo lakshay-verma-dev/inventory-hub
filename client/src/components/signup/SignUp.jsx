@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../store/userSlice";
 import { jwtDecode } from "jwt-decode";
 const SignUp = () => {
+  const google_recaptcha = import.meta.env.VITE_GOOGLE_RECAPTCHA;
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -113,7 +114,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
   // Import for decoding JWT
 
- const handleVerifyEmail = async () => {
+  const handleVerifyEmail = async () => {
     if (!otp) {
       setOTPError("OTP is required.");
       toast.error("Please enter the OTP");
@@ -159,7 +160,7 @@ const SignUp = () => {
     } finally {
       setIsLoading(false);
     }
- };
+  };
   const handleBackToSignUp = () => {
     setVerificationSent(false);
   };
@@ -293,7 +294,7 @@ const SignUp = () => {
                   </Form.Group>
 
                   <ReCAPTCHA
-                    sitekey="6LcHuTIqAAAAALM_mxJdYJ1Fblu5gwv5rR2EF2JP"
+                    sitekey={google_recaptcha}
                     onChange={onChangeCaptcha}
                     className="mt-3"
                   />

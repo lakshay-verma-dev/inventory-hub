@@ -6,7 +6,7 @@ import bilogo from "./bilogo.png";
 
 const Banner = () => {
   return (
-    <div className="search-banner px-5">
+    <div className="search-banner px-5 pt-2">
       <Container fluid>
         <Row className="align-items-center ">
           <Col md={6}>
