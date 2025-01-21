@@ -28,5 +28,5 @@ app.get("/", (req, res) => {
 });
 connectDb(url);
 app.listen(port, () => {
-  console.log(`App listening on port http://localhost:${port}`);
+  console.log(`Server Started`);
 });

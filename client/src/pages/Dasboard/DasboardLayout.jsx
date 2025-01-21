@@ -9,7 +9,6 @@ const DashboardLayout = () => {
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("user");
-    // console.log("asf", storedUserData);
     if (storedUserData) {
       try {
         const userData = JSON.parse(storedUserData);

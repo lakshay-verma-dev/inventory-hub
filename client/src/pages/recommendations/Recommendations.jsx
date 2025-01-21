@@ -36,7 +36,7 @@ const Recommendations = () => {
             >
               <Card
                 className="recommendation-card border-0 shadow-lg"
-                style={{ width: "30rem" }}
+                style={{ width: "25rem" }}
               >
                 <Card.Img
                   variant="top"

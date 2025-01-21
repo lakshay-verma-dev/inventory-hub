@@ -134,7 +134,7 @@
 /* Updated Button Styling */
 /* Updated Button Styling */
 .shop-card-container .explore-more-button {
-  padding: 12px 15px; /* Increased padding for a larger button */
+  padding: 12px 10px;
   font-weight: bold;
   background-color: #0066cc; /* Primary button color */
   color: white;

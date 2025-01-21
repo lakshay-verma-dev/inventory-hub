@@ -19,7 +19,6 @@ import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const { user } = useSelector((state) => state.user);
-  // console.log("efwiw",user)
   return (
     <Navbar
       bg="dark"

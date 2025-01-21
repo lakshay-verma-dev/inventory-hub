@@ -14,7 +14,6 @@ function App() {
     if (storedUserData) {
       try {
         const userData = JSON.parse(storedUserData);
-        // console.log("asf",userData);
         
         if (userData.token && userData.user) {
           dispatch(setUser(userData));
