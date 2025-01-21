@@ -210,7 +210,7 @@ const Shop = () => {
                       <div className="d-flex justify-content-between align-items-center mb-0">
                         <span className="text-primary">${item.price}</span>
                         <Button
-                          className="explore-more-button"
+                          className="explore-more-button px-3"
                           variant="primary"
                           onClick={() => makePayment(item)}
                         >
