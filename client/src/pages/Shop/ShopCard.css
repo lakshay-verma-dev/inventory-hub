@@ -134,16 +134,16 @@
 /* Updated Button Styling */
 /* Updated Button Styling */
 .shop-card-container .cart-shop-card .explore-more-button {
-  padding: 12px 6px;
+  padding: 10px 6px;
   font-weight: bold;
-  background-color: #0066cc; /* Primary button color */
+   background-color: #063f96; /* Primary button color */
   color: white;
   border: none;
   border-radius: 5px;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  font-size: 1.1rem; /* Slightly larger font size */
+  font-size: 1rem; /* Slightly larger font size */
   width: 100%; /* Make button full width inside the card */
-  max-width: 150px; /* Limit the width of the button for better appearance */
+  max-width: 160px; /* Limit the width of the button for better appearance */
   margin-top: 10px; /* Add space between the price and the button */
   margin-bottom: 20px; /* Add bottom margin to create space between the button and card's bottom */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the button */
