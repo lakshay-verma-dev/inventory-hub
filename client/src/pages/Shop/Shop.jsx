@@ -178,7 +178,7 @@ const Shop = () => {
                 sm={6}
                 xs={12}
                 className="mb-4"
-                style={{ width: "22.4rem" }}
+                style={{ width: "24.9rem" }}
               >
                 <motion.div className="position-relative cart-shop-card">
                   <Card className="h-100">
@@ -210,7 +210,7 @@ const Shop = () => {
                       <div className="d-flex justify-content-between align-items-center mb-0">
                         <span className="text-primary">${item.price}</span>
                         <Button
-                          className="explore-more-button px-3"
+                          className="explore-more-button"
                           variant="primary"
                           onClick={() => makePayment(item)}
                         >
