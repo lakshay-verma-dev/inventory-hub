@@ -2,25 +2,21 @@ import stripe from "stripe";
 import { config } from "dotenv";
 config();
 
-const stripeInstance = stripe(process.env.STRIPE_KEY); // Replace with your Stripe secret key
+const stripeInstance = stripe(process.env.STRIPE_KEY); 
 const frontendURL = process.env.FRONTEND_API;
 
 async function paymentSession(req, res) {
   const { products } = req.body;
 
-  // Check if products are provided
   if (!products || products.length === 0) {
     return res.status(400).json({ error: "No products found" });
   }
-
-  // Create line items from products
   const lineItems = products.map((item) => {
     if (!item.title || !item.price) {
       throw new Error("Product missing title or price");
     }
 
-    // Ensure the price is rounded and converted to cents (integer)
-    const unitAmountInCents = Math.round(item.price * 100); // Convert price to cents and round to nearest integer
+    const unitAmountInCents = Math.round(item.price * 100); 
 
     return {
       price_data: {

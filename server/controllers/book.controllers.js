@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid"; // For generating unique string IDs
+import { v4 as uuidv4 } from "uuid"; 
 import Book from "../models/book.models.js";
 import uploadImageToCloudinary from "../utils/cloudnary.js";
 
@@ -43,7 +43,7 @@ const uploadBook = async (req, res) => {
       id: uuidv4(),
       title,
       author,
-      price: parseFloat(price), // Ensure price is stored as a number
+      price: parseFloat(price), 
       description,
       imageURL,
       category,
@@ -60,7 +60,7 @@ const uploadBook = async (req, res) => {
 };
 const getAllBooks = async (req, res) => {
   try {
-    const books = await Book.find(); // Fetch all books
+    const books = await Book.find(); 
     if (!books.length) {
       return res.status(404).json({ error: "No books found" });
     }
@@ -73,12 +73,12 @@ const getAllBooks = async (req, res) => {
 };
 const getUserBooks = async (req, res) => {
   try {
-    const { userData } = req.body; // Extract userData from the request body
+    const { userData } = req.body; 
     if (!userData) {
       return res.status(400).json({ error: "User data is required" });
     }
 
-    const books = await Book.find({ user: userData }); // Fetch books for the specific user
+    const books = await Book.find({ user: userData }); 
     if (!books.length) {
       return res
         .status(404)
